@@ -30,7 +30,7 @@ Lets you do:
 
 Works with any comparable:
 
-    println 'a'.clamp( 'b', 'z' ) // a
+    println 'a'.clamp( 'b', 'z' ) // b
 
 ## Multi closure `sort`
 
