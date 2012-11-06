@@ -1,0 +1,40 @@
+apply plugin: 'groovy'
+
+compileJava.options.compilerArgs << "-Xlint:unchecked" << "-Werror"
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  groovy 'org.codehaus.groovy:groovy:2.0.5'
+  testCompile 'org.spockframework:spock-core:0.6-groovy-1.8'
+}
+
+group = 'com.bloidonia'
+
+version = '0.1'
+
+def metaServices = new File( 'src/main/groovy/META-INF/services' )
+
+task generateModule << {
+  metaServices.mkdirs()
+  new File( metaServices, 'org.codehaus.groovy.runtime.ExtensionModule' ).withWriter { w ->
+    w.writeLine 'moduleName=groovy-stream'
+    w.writeLine "moduleVersion=$version"
+    w.writeLine 'extensionClasses=com.bloidonia.groovy.extensions.NumericExtensionMethods,com.bloidonia.groovy.extensions.CollectionExtensionMethods'
+    w.writeLine 'staticExtensionClasses='
+  }
+}
+
+compileGroovy.dependsOn( generateModule )
+
+jar {
+  from( metaServices ) {
+    include 'org.codehaus.groovy.runtime.ExtensionModule' into( 'META-INF/services' )
+  }
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '1.2'
+}
