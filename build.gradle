@@ -8,7 +8,7 @@ repositories {
 
 dependencies {
   groovy 'org.codehaus.groovy:groovy:2.0.5'
-  testCompile 'org.spockframework:spock-core:0.6-groovy-1.8'
+  testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
 }
 
 group = 'com.bloidonia'
