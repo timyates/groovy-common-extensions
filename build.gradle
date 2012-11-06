@@ -1,6 +1,6 @@
 apply plugin: 'groovy'
 
-compileJava.options.compilerArgs << "-Xlint:unchecked" << "-Werror"
+version = '0.1'
 
 repositories {
   mavenCentral()
@@ -9,11 +9,10 @@ repositories {
 dependencies {
   groovy 'org.codehaus.groovy:groovy:2.0.5'
   testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+  testCompile fileTree( dir:'build/libs/', includes:[ "groovy-common-extensions-${version}.jar" ] )
 }
 
 group = 'com.bloidonia'
-
-version = '0.1'
 
 def metaServices = new File( 'src/main/groovy/META-INF/services' )
 
