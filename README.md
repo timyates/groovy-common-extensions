@@ -48,3 +48,7 @@ Lets you do ([example from here](https://gist.github.com/3314416)):
 Lets you safely grab the end of a list, as you can with `take` for the front
 
     println [1,2,3,4].take( -2 ) // [3,4]
+
+If you pass a positive number, it delegates to the original `DGM.take` method
+
+    println [1,2,3,4].take( 2 ) // [1,2]
