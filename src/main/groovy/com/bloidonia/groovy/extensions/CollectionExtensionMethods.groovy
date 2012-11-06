@@ -13,6 +13,7 @@ class CollectionExtensionMethods {
   static List take( List self, int n ) {
     int absn = Math.abs( n )
     if( n >= 0 || absn == self.size() ) {
+      // Shouldn't be doing this, but I can't think of another way to delegate back to DGM
       DefaultGroovyMethods.take( self, absn )
     }
     else {
