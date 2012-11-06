@@ -5,7 +5,16 @@ system.
 
 Obviously requires Groovy 2.0.5 (so that the extension system exists)
 
-Currently a WIP to see how useful I find it...
+Usage:
+
+    git clone git://github.com/timyates/groovy-common-extensions.git
+    cd groovy-common-extensions
+    ./gradlew jar
+
+Then include the `build/lib/groovy-common-extensions-0.1.jar` in your classpath
+when starting groovy and the following methods will be available to you:
+
+**Currently a WIP to see how useful I find it...**
 
 # Current extensions:
 
