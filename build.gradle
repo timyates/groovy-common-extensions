@@ -21,7 +21,7 @@ task generateModule << {
   new File( metaServices, 'org.codehaus.groovy.runtime.ExtensionModule' ).withWriter { w ->
     w.writeLine 'moduleName=groovy-stream'
     w.writeLine "moduleVersion=$version"
-    w.writeLine 'extensionClasses=com.bloidonia.groovy.extensions.NumericExtensionMethods,com.bloidonia.groovy.extensions.CollectionExtensionMethods'
+    w.writeLine 'extensionClasses=com.bloidonia.groovy.extensions.NumericExtensionMethods,com.bloidonia.groovy.extensions.CollectionExtensionMethods,com.bloidonia.groovy.extensions.ObjectExtensionMethods'
     w.writeLine 'staticExtensionClasses='
   }
 }

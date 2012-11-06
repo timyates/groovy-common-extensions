@@ -61,3 +61,35 @@ Lets you safely grab the end of a list, as you can with `take` for the front
 If you pass a positive number, it delegates to the original `DGM.take` method
 
     println [1,2,3,4].take( 2 ) // [1,2]
+
+## `withClosable`
+
+    static Object withClosable( Object self, Closure c ) {
+
+Executes the closure (passing the delegate), and when finished it calls
+`close` on the delegate if the method exists.  If it doesn't exist, it does
+nothing.
+
+Examples:
+
+    // Create a FileWriter, close it when finished
+    new FileWriter( '/tmp/d.txt' ).withClosable {
+      it.println 'd'
+    }
+
+    // Create 3 FileWriters, close them all when done, and return
+    // Closure result ('tim') to the rslt var
+    def rslt = [ '/tmp/a.txt', '/tmp/b.txt', '/tmp/c.txt' ].collect {
+      new FileWriter( it )
+    }.withClosable { a, b, c ->
+      a.println 'a'
+      b.println 'b'
+      c.println 'c'
+      'tim'
+    }
+    assert rslt == 'tim'
+
+    // This works, but does nothing
+    'tim'.withClosable {
+      println it
+    }
