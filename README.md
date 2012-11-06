@@ -40,3 +40,11 @@ Lets you do ([example from here](https://gist.github.com/3314416)):
 
     // returns [2, 5, 0, 1, 3, 4]
     list.sort( false, { it.firstName }, { it.lastName }, { it.age } )*.id
+
+## Negative index `take` (with Lists)
+
+    static List take( List self, int n )
+
+Lets you safely grab the end of a list, as you can with `take` for the front
+
+    println [1,2,3,4].take( -2 ) // [3,4]
