@@ -26,13 +26,15 @@ task generateModule << {
   }
 }
 
-compileGroovy.dependsOn( generateModule )
-
 jar {
   from( metaServices ) {
     include 'org.codehaus.groovy.runtime.ExtensionModule' into( 'META-INF/services' )
   }
 }
+
+// Hook up dependencies
+compileGroovy.dependsOn( generateModule )
+test.dependsOn( jar )
 
 task wrapper(type: Wrapper) {
   gradleVersion = '1.2'
