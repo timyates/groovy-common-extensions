@@ -1,4 +1,4 @@
 moduleName=groovy-stream
 moduleVersion=0.1
-extensionClasses=com.bloidonia.groovy.extensions.NumericExtensionMethods,com.bloidonia.groovy.extensions.CollectionExtensionMethods,com.bloidonia.groovy.extensions.ObjectExtensionMethods
+extensionClasses=com.bloidonia.groovy.extensions.CollectionExtensionMethods,com.bloidonia.groovy.extensions.NumericExtensionMethods,com.bloidonia.groovy.extensions.ObjectExtensionMethods
 staticExtensionClasses=
