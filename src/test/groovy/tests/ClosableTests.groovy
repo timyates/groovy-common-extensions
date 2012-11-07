@@ -1,7 +1,6 @@
 package tests
 
 import spock.lang.Specification
-import spock.lang.Unroll
 
 public class ClosableTests extends Specification {
   def 'check withClosable with test class'() {
