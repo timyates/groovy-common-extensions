@@ -14,8 +14,6 @@ dependencies {
 
 group = 'com.bloidonia'
 
-def metaServices = new File( 'src/main/groovy/META-INF/services' )
-
 task generateModule << {
   def extensionFiles = sourceSets.main.groovy.with { g ->
     g.findAll {
@@ -28,23 +26,19 @@ task generateModule << {
       it[ 1..-8 ]
     }.join( ',' )
   }
-  metaServices.mkdirs()
-  new File( metaServices, 'org.codehaus.groovy.runtime.ExtensionModule' ).withWriter { w ->
-    w.writeLine 'moduleName=groovy-stream'
-    w.writeLine "moduleVersion=$version"
-    w.writeLine "extensionClasses=$extensionFiles"
-    w.writeLine 'staticExtensionClasses='
-  }
-}
-
-jar {
-  from( metaServices ) {
-    include 'org.codehaus.groovy.runtime.ExtensionModule' into( 'META-INF/services' )
+  new File( "$buildDir/classes/main/META-INF/services" ).with { f ->
+    f.mkdirs()
+    new File( f, 'org.codehaus.groovy.runtime.ExtensionModule' ).withWriter { w ->
+      w.writeLine 'moduleName=groovy-stream'
+      w.writeLine "moduleVersion=$version"
+      w.writeLine "extensionClasses=$extensionFiles"
+      w.writeLine 'staticExtensionClasses='
+    }
   }
 }
 
 // Hook up dependencies
-compileGroovy.dependsOn( generateModule )
+jar.dependsOn( generateModule ) 
 test.dependsOn( jar )
 
 task wrapper(type: Wrapper) {
