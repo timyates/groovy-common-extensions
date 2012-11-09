@@ -56,9 +56,21 @@ class FileExtensionMethods {
     }
 
     private static void checkZipDestination( File file ) {
-        if (file && !file.exists()) file.createNewFile()
-        if (file && !file.isFile()) throw new IllegalArgumentException("'destination' has to be a *.zip file.")
-        if (file && !file.name.toLowerCase().endsWith(ZIP_EXTENSION)) throw new IllegalArgumentException("'destination' has to be a *.zip file.")
+        boolean created = false
+        if (file && !file.exists()) {
+            file.createNewFile()
+            created = true
+        }
+        try {
+            if (file && !file.isFile()) throw new IllegalArgumentException("'destination' has to be a *.zip file.")
+            if (file && !file.name.toLowerCase().endsWith(ZIP_EXTENSION)) throw new IllegalArgumentException("'destination' has to be a *.zip file.")
+        }
+        catch( e ) {
+            if( created ) {
+                file.delete()
+            }
+            throw e
+        }
     }
 
     /**
