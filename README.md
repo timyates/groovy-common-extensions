@@ -93,3 +93,25 @@ Examples:
     'tim'.withClosable {
       println it
     }
+
+## `zip` and `unzip`
+
+    static File zip ( File self, File destination = null )
+    static Collection<File> unzip ( File self, File destination = null )
+
+Zips/unzips a single file or directory tree. If no destination is given, the target directory for the generated
+ zip or extracted file(s) will be relative to the current file location.
+
+Examples:
+
+    // zips the directory tree and creates a 'tmp.zip' file in '/var'
+    File zipFile = new File('/var/tmp/').zip()
+
+    // extracts the files to '/var/'
+    Collection<File> extractedFiles = new File('/var/tmp.zip').unzip()
+
+    // zips the directory content and moves 'tmp.zip' to '/home/bill'
+    File zipFile = new File('/var/tmp/').zip(new File('/home/bill/tmp.zip')
+
+    // extracts the files to '/home/bill/'
+    Collection<File> extractedFiles = new File('/var/tmp.zip').unzip(new File('/home/bill'))
