@@ -1,4 +1,5 @@
 apply plugin: 'groovy'
+apply plugin: 'idea'
 
 version = '0.1'
 
