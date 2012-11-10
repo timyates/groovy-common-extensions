@@ -11,7 +11,7 @@ Usage:
     cd groovy-common-extensions
     ./gradlew jar
 
-Then include the `build/lib/groovy-common-extensions-0.1.jar` in your classpath
+Then include the `build/lib/groovy-common-extensions-0.2.jar` in your classpath
 when starting groovy and the following methods will be available to you:
 
 **Currently a WIP to see how useful I find it...**
