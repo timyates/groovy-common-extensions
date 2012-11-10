@@ -14,6 +14,18 @@ class FileExtensionMethods {
 
     public static final String ZIP_EXTENSION = ".zip"
 
+    static File zip ( File self )  {
+        zip( self, null, null )
+    }
+
+    static File zip ( File self, File destination )  {
+        zip( self, destination, null )
+    }
+
+    static File zip ( File self, Closure<Boolean> filter )  {
+        zip( self, null, filter )
+    }
+
     /**
      * Zips this {@link java.io.File} and places it in the optional <tt>destination</tt> directory. If the
      * <tt>destination</tt> directory is not provided, the resulting ZIP file will be placed in this file's
@@ -25,7 +37,7 @@ class FileExtensionMethods {
      *
      * @return the zipped {@link java.io.File}
      */
-    static File zip ( File self, File destination = null )  {
+    static File zip ( File self, File destination, Closure<Boolean> filter )  {
 
         checkZipDestination(destination)
 
@@ -45,10 +57,14 @@ class FileExtensionMethods {
         zipOutput.withStream {
             if (self.isDirectory())  {
                 self.eachFileRecurse(FileType.FILES) {
-                    addToZipOutput(it, (it.absolutePath - it.name) - root)
+                    if( filter == null || filter( it ) ) {
+                        addToZipOutput(it, (it.absolutePath - it.name) - root)
+                    }
                 }
             } else {
-                addToZipOutput(self, "")
+                if( filter == null || filter( it ) ) {
+                    addToZipOutput(self, "")
+                }
             }
         }
 
@@ -73,6 +89,18 @@ class FileExtensionMethods {
         }
     }
 
+    static Collection<File> unzip ( File self ) {
+        unzip( self, null, null )
+    }
+
+    static Collection<File> unzip ( File self, File destination ) {
+        unzip( self, destination, null )
+    }
+
+    static Collection<File> unzip ( File self, Closure<Boolean> filter ) {
+        unzip( self, null, filter )
+    }
+
     /**
      * Unzips this file. As a precondition, this file has to refer to a *.zip file. If the <tt>destination</tt>
      * directory is not provided, it will fall back to this file's parent directory.
@@ -81,7 +109,7 @@ class FileExtensionMethods {
      * @param destination (optional), the destination directory where this file's content will be unzipped to.
      * @return a {@link java.util.Collection} of unzipped {@link java.io.File} objects.
      */
-    static Collection<File> unzip ( File self, File destination = null ) {
+    static Collection<File> unzip ( File self, File destination, Closure<Boolean> filter ) {
         checkUnzipFileType(self)
         checkUnzipDestination(destination)
 
@@ -96,24 +124,28 @@ class FileExtensionMethods {
             while(entry = zipInput.nextEntry)  {
                 if (!entry.isDirectory())  {
                     final file = new File(destination, entry.name)
-                    file.parentFile?.mkdirs()
+                    if( filter == null || filter( file ) ) {
+                        file.parentFile?.mkdirs()
 
-                    def output = new FileOutputStream(file)
-                    output.withStream {
-                        int len = 0;
-                        byte[] buffer = new byte[4096]
-                        while ((len = zipInput.read(buffer)) > 0){
-                            output.write(buffer, 0, len);
+                        def output = new FileOutputStream(file)
+                        output.withStream {
+                            int len = 0;
+                            byte[] buffer = new byte[4096]
+                            while ((len = zipInput.read(buffer)) > 0){
+                                output.write(buffer, 0, len);
+                            }
                         }
-                    }
 
-                    unzippedFiles << file
+                        unzippedFiles << file
+                    }
                 }
                 else {
                     final dir = new File(destination, entry.name)
-                    dir.mkdir()
+                    if( filter == null || filter( file ) ) {
+                        dir.mkdir()
 
-                    unzippedFiles << dir
+                        unzippedFiles << dir
+                    }
                 }
             }
         }

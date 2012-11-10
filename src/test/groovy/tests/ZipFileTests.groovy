@@ -37,6 +37,34 @@ public class ZipFileTests extends Specification {
             result == new File(dir.parent, "test.zip")
     }
 
+    def 'zip specified files in the given directory'() {
+        given:
+            File result = dir.zip {
+                it.name in [ 'test1.txt', 'test3.txt' ]
+            }
+            def files = result.unzip()
+
+        expect:
+            result == new File(dir.parent, "test.zip")
+            files.size() == 2
+            files*.name.sort() == [ 'test1.txt', 'test3.txt' ]
+    }
+
+    def 'zip and unzip filtered files in the given directory'() {
+        given:
+            File result = dir.zip {
+                it.name in [ 'test1.txt', 'test3.txt' ]
+            }
+            def files = result.unzip {
+                it.name == 'test3.txt'
+            }
+
+        expect:
+            result == new File(dir.parent, "test.zip")
+            files.size() == 1
+            files*.name == [ 'test3.txt' ]
+    }
+
     def 'zip a single file'() {
         given:
             File result = txt1.zip()

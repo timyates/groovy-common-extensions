@@ -96,16 +96,28 @@ Examples:
 
 ## `zip` and `unzip`
 
-    static File zip ( File self, File destination = null )
-    static Collection<File> unzip ( File self, File destination = null )
+    static File zip ( File self )
+    static File zip ( File self, File destination )
+    static File zip ( File self, Closure<Boolean> filter )
+    static File zip ( File self, File destination, Closure<Boolean> filter )
+
+    static Collection<File> unzip ( File self )
+    static Collection<File> unzip ( File self, File destination )
+    static Collection<File> unzip ( File self, Closure<Boolean> filter )
+    static Collection<File> unzip ( File self, File destination, Closure<Boolean> filter )
 
 Zips/unzips a single file or directory tree. If no destination is given, the target directory for the generated
- zip or extracted file(s) will be relative to the current file location.
+ zip or extracted file(s) will be relative to the current file location.  If a filter is specified, then each file is passed to the closure before it is handled.  If the closure returns `false`, the file is skipped.
 
 Examples:
 
     // zips the directory tree and creates a 'tmp.zip' file in '/var'
     File zipFile = new File('/var/tmp/').zip()
+
+    // zips all *.txt files in the directory tree and creates a 'tmp.zip' file in '/var'
+    File zipFile = new File('/var/tmp/').zip {
+      it.name.endsWith '.txt'
+    }
 
     // extracts the files to '/var/'
     Collection<File> extractedFiles = new File('/var/tmp.zip').unzip()
