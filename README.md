@@ -21,12 +21,16 @@ when starting groovy and the following methods will be available to you:
 ## `clamp`
 
     static <T extends Comparable> T clamp( T self, T lower, T upper )
+    static <T extends Comparable> T clamp( T self, Range range ) {
+    static Range clamp( Range self, Range range ) {
 
 Lets you do:
 
     println 10.clamp(  1, 15 )    // 10
     println 10.clamp(  1,  5 )    // 5
     println 10.clamp( 12, 20 )    // 12
+    println 10.clamp( 12..20 )    // 12
+    println (3..20).clamp( 2..9 ) // 3..9
 
 Works with any comparable:
 
