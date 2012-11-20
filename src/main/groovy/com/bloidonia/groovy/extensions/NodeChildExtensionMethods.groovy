@@ -7,12 +7,15 @@ import groovy.util.slurpersupport.NodeChild
  * Date: 11/20/12
  */
 class NodeChildExtensionMethods {
-    static Map toMap(NodeChild self) {
+    static Map toMap( NodeChild self ) {
+        toMap( self, '_children' )
+    }
+
+    static Map toMap( NodeChild self, String childKey ) {
         [
-                (self.name()): [*: self.attributes()] <<
-                        (self.children().size()
-                        ? [_children: self.children().collect { toMap(it) }]
-                        : [:])
+            (self.name()): [ *:self.attributes() ] <<
+                            ( self.children().size() ? [ (childKey): self.children().collect { it.toMap( childKey ) } ]
+                                                     : [:] )
         ]
     }
 }
