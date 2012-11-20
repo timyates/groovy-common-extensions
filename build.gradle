@@ -8,7 +8,7 @@ repositories {
 }
 
 dependencies {
-  groovy 'org.codehaus.groovy:groovy:2.0.5'
+  groovy 'org.codehaus.groovy:groovy-all:2.0.5'
   testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
   testCompile fileTree( dir:'build/libs/', includes:[ "groovy-common-extensions-${version}.jar" ] )
 }
