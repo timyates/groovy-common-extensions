@@ -131,3 +131,28 @@ Examples:
 
     // extracts the files to '/home/bill/'
     Collection<File> extractedFiles = new File('/var/tmp.zip').unzip(new File('/home/bill'))
+
+## `toMap` functionality for `NodeChild`
+
+    static Map toMap( NodeChild self )
+    static Map toMap( NodeChild self, String childKey )
+
+Converts a `NodeChild` and its children to a `Map`.  Child nodes are by default put inside a
+key `_children`, though this can be changed using the optional `childKey` parameter (if your
+xml contains `_children` nodes for example)
+
+Examples:
+
+    def xmlstr = '<dan value="a"><subnode><item value="a"/></subnode></dan>'
+    def xml = new XmlSlurper().parseText( xmlstr )
+    def map = xml.toMap()
+
+    assert map == [dan:[value:'a',_children:[[subnode:[_children:[[item:[value:'a']]]]]]]]
+
+And with a `childKey`:
+
+    def xmlstr = '<dan value="a"><subnode><item value="a"/></subnode></dan>'
+    def xml = new XmlSlurper().parseText( xmlstr )
+    def map = xml.toMap( 'kids' )
+
+    assert map == [dan:[value:'a',kids:[[subnode:[kids:[[item:[value:'a']]]]]]]]
