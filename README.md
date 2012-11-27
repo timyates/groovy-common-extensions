@@ -156,3 +156,55 @@ And with a `childKey`:
     def map = xml.toMap( 'kids' )
 
     assert map == [dan:[value:'a',kids:[[subnode:[kids:[[item:[value:'a']]]]]]]]
+
+## Extended `merge` functionality for `ConfigObject`
+
+    static ConfigObject merge( Map self, Map other, Boolean sourcePrecedence )
+
+Boolean `sourcePrecedence` specifies that the source `ConfigObject` should not have it's existing key/value
+pair overwritten by a merge with another `ConfigObject`
+
+Example:
+
+        def config1 = """
+            config {
+                a = 1
+                b = 2
+                c = 3
+            }
+        """
+        def config2 = """
+            config {
+                a = 2
+                b = 2
+            }
+        """
+        def configObject1 = new ConfigSlurper().parse(config1)
+        def configObject2 = new ConfigSlurper().parse(config2)
+        def merge = configObject2.merge(configObject1)
+
+        def configObject3 = new ConfigSlurper().parse(config1)
+        def configObject4 = new ConfigSlurper().parse(config2)
+        def mergeWithSourcePrecedence = configObject4.merge(configObject3,true)
+
+        // overwrote config2's value
+        assert merge.config.a == 1
+        // preserved config2's value
+        assert mergeWithSourcePrecedence.config.a == 2
+
+        // config2 inherited value from config1
+        assert merge.config.c == 3
+        // config2 inherited from config1
+        assert mergeWithSourcePrecedence.config.c == merge.config.c
+
+## `rand` functionality for `List`
+
+    static <T> T rand( List<T> self )
+
+Randomly select an element from a list.
+
+Example:
+
+    def list = [1, 2, 3, 4, 5]
+    def randomInt = list.rand()
+    assert randomInt in list
