@@ -245,10 +245,8 @@ Randomly select an element from a list.
 
 Example:
 
-<code>
 ```groovy
     def list = [1, 2, 3, 4, 5]
     def randomInt = list.rand()
     assert randomInt in list
 ```
-</code>
