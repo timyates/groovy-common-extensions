@@ -3,7 +3,7 @@ package tests
 import spock.lang.Specification
 
 /**
- * User: ddcdwoods
+ * User: dan-woods
  * Date: 11/26/12
  */
 class ConfigObjectTests extends Specification {

@@ -1,7 +1,7 @@
 package com.bloidonia.groovy.extensions
 
 /**
- * User: ddcdwoods
+ * User: dan-woods
  * Date: 11/26/12
  */
 class ConfigObjectExtensionMethods {
