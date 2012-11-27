@@ -26,15 +26,23 @@ when starting groovy and the following methods will be available to you:
 
 Lets you do:
 
+<code>
+```groovy
     println 10.clamp(  1, 15 )    // 10
     println 10.clamp(  1,  5 )    // 5
     println 10.clamp( 12, 20 )    // 12
     println 10.clamp( 12..20 )    // 12
     println (3..20).clamp( 2..9 ) // 3..9
+```
+</code>
 
 Works with any comparable:
 
+<code>
+```groovy
     println 'a'.clamp( 'b', 'z' ) // b
+```
+</code>
 
 ## Multi closure `sort`
 
@@ -42,6 +50,8 @@ Works with any comparable:
 
 Lets you do ([example from here](https://gist.github.com/3314416)):
 
+<code>
+```groovy
     List list = [
       [id:0, firstName: 'Sachin', lastName: 'Tendulkar', age: 40 ],
       [id:1, firstName: 'Sachin', lastName: 'Tendulkar', age: 103 ],
@@ -53,6 +63,8 @@ Lets you do ([example from here](https://gist.github.com/3314416)):
 
     // returns [2, 5, 0, 1, 3, 4]
     list.sort( false, { it.firstName }, { it.lastName }, { it.age } )*.id
+```
+</code>
 
 ## Negative index `take` (with Lists)
 
@@ -60,11 +72,19 @@ Lets you do ([example from here](https://gist.github.com/3314416)):
 
 Lets you safely grab the end of a list, as you can with `take` for the front
 
+<code>
+```groovy
     println [1,2,3,4].take( -2 ) // [3,4]
+```
+</code>
 
 If you pass a positive number, it delegates to the original `DGM.take` method
 
+<code>
+```groovy
     println [1,2,3,4].take( 2 ) // [1,2]
+```
+</code>
 
 ## `withClosable`
 
@@ -76,6 +96,8 @@ nothing.
 
 Examples:
 
+<code>
+```groovy
     // Create a FileWriter, close it when finished
     new FileWriter( '/tmp/d.txt' ).withClosable {
       it.println 'd'
@@ -97,6 +119,8 @@ Examples:
     'tim'.withClosable {
       println it
     }
+```
+</code>
 
 ## `zip` and `unzip`
 
@@ -115,6 +139,8 @@ Zips/unzips a single file or directory tree. If no destination is given, the tar
 
 Examples:
 
+<code>
+```groovy
     // zips the directory tree and creates a 'tmp.zip' file in '/var'
     File zipFile = new File('/var/tmp/').zip()
 
@@ -131,6 +157,8 @@ Examples:
 
     // extracts the files to '/home/bill/'
     Collection<File> extractedFiles = new File('/var/tmp.zip').unzip(new File('/home/bill'))
+```
+</code>
 
 ## `toMap` functionality for `NodeChild`
 
@@ -143,19 +171,27 @@ xml contains `_children` nodes for example)
 
 Examples:
 
+<code>
+```groovy
     def xmlstr = '<dan value="a"><subnode><item value="a"/></subnode></dan>'
     def xml = new XmlSlurper().parseText( xmlstr )
     def map = xml.toMap()
 
     assert map == [dan:[value:'a',_children:[[subnode:[_children:[[item:[value:'a']]]]]]]]
+```
+</code>
 
 And with a `childKey`:
 
+<code>
+```groovy
     def xmlstr = '<dan value="a"><subnode><item value="a"/></subnode></dan>'
     def xml = new XmlSlurper().parseText( xmlstr )
     def map = xml.toMap( 'kids' )
 
     assert map == [dan:[value:'a',kids:[[subnode:[kids:[[item:[value:'a']]]]]]]]
+```
+</code>
 
 ## Extended `merge` functionality for `ConfigObject`
 
@@ -166,6 +202,8 @@ pair overwritten by a merge with another `ConfigObject`
 
 Example:
 
+<code>
+```groovy
         def config1 = """
             config {
                 a = 1
@@ -196,6 +234,8 @@ Example:
         assert merge.config.c == 3
         // config2 inherited from config1
         assert mergeWithSourcePrecedence.config.c == merge.config.c
+ ```
+ </code>
 
 ## `rand` functionality for `List`
 
@@ -205,6 +245,10 @@ Randomly select an element from a list.
 
 Example:
 
+<code>
+```groovy
     def list = [1, 2, 3, 4, 5]
     def randomInt = list.rand()
     assert randomInt in list
+```
+</code>
