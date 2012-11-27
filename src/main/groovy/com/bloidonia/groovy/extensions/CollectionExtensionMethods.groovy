@@ -23,4 +23,8 @@ class CollectionExtensionMethods {
       }
     }
   }
+
+  static <T> T rand( List<T> self ) {
+      self[new Random().nextInt(self.size())]
+  }
 }
