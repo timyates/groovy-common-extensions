@@ -41,4 +41,47 @@ class ConfigObjectTests extends Specification {
         // config2 inherited from config1
         assert mergeWithSourcePrecedence.config.c == merge.config.c
     }
+    def 'check recursion with source precedence in merge'() {
+        given:
+        def c = """
+                base {
+                    name = "base"
+                    database {
+                        username = "sa"
+                        password = ""
+                        hbm2ddl = "create-drop"
+                        bootstrap_data = false
+                    }
+                }
+                dev {
+                    name = "dev"
+                    extendsFrom = "base"
+                    database {
+                        hbm2ddl = "create"
+                        bootstrap_data = false
+                    }
+                }
+        """
+        // consume the config and recurse w/ no source precedence
+        def noSourcePrecedenceConfigMap = new ConfigSlurper().parse(c)
+        def noSourcePrecedenceEnvConfig = inheritConfigs(noSourcePrecedenceConfigMap,noSourcePrecedenceConfigMap["dev"], false)
+
+        // "" with source precedence
+        def withSourcePrecedenceConfigMap = new ConfigSlurper().parse(c)
+        def withSourcePrecedenceEnvConfig = inheritConfigs(withSourcePrecedenceConfigMap,withSourcePrecedenceConfigMap["dev"], true)
+
+
+        expect:
+        assert noSourcePrecedenceEnvConfig.name == "base"
+        assert withSourcePrecedenceEnvConfig.name == "dev"
+
+    }
+
+    private static ConfigObject inheritConfigs(rootConfig, config, sourcePrecedence) {
+        def extConfig = rootConfig[config?.extendsFrom]
+        if (extConfig) {
+            config.merge(inheritConfigs(rootConfig, extConfig, sourcePrecedence), sourcePrecedence)
+        }
+        return config
+    }
 }
