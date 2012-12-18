@@ -19,12 +19,10 @@ package com.bloidonia.groovy.extensions
 import org.codehaus.groovy.runtime.DefaultGroovyMethods
 import static org.codehaus.groovy.runtime.DefaultGroovyMethodsSupport.createSimilarList
 
-/*
+/**
+ * @author Tim Yates
  * @author dwoods
- * @author timyates
- * @date 11/27/12
  */
-
 class CollectionExtensionMethods {
   static Collection sort( Collection self, boolean mutate, Closure... closures ) {
     self.sort( mutate ) { a, b ->
