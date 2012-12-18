@@ -83,4 +83,44 @@ class CollectionExtensionMethods {
     }
     ret
   }
+
+  static class TransposingIterator<T> implements Iterator<T> {
+    private int idx = 0
+    private List<Iterator> iter
+    private List<Integer>  amts
+   
+    TransposingIterator( List<List> lists, List<Integer> amounts ) {
+      iter = lists*.iterator()
+      int i = 0
+      amts = amounts.collectMany { [ i++ ] * it }
+    }
+   
+    private void moveIdx() {
+      idx = ++idx % amts.size()
+    }
+   
+    @Override boolean hasNext() {
+      iter*.hasNext().any()
+    }
+   
+    @Override T next() {
+      if( !hasNext() ) { throw new NoSuchElementException() }
+      while( !iter[ amts[ idx ] ].hasNext() ) { moveIdx() }
+      T ret = iter[ amts[ idx ] ].next()
+      moveIdx()
+      ret
+    }
+   
+    @Override void remove() {
+      throw new UnsupportedOperationException()
+    }
+  }
+
+  static <T> Iterator<T> transposedIterator( List<List<T>> lists ) {
+    transposedIterator( lists, [ 1 ] * lists.size() )
+  }
+
+  static <T> Iterator<T> transposedIterator( List<List<T>> lists, List<Integer> amounts ) {
+    new TransposingIterator( lists, amounts )
+  }
 }

@@ -223,3 +223,32 @@ Example:
         assert merge.config.c == 3
         // config2 inherited from config1
         assert mergeWithSourcePrecedence.config.c == merge.config.c
+
+## Transposed Iterator for List of Lists
+
+    static <T> Iterator<T> transposedIterator( List<List<T>> lists )
+    static <T> Iterator<T> transposedIterator( List<List<T>> lists, List<Integer> amounts )
+
+Given a list of lists, ie:
+
+    def a = [ 1..4, 'a'..'e' ]
+
+you can (with Groovy) call `a.transpose()` ie:
+
+    assert a.transpose() == [ [ 1,'a' ], [ 2,'b' ], [ 3,'c' ], [ 4,'d' ] ]
+
+This new functionality returns an iterator, and you can specify how many reseults of each list to expect. So:
+
+    // need the collect as we want the values from the Iterator
+    def b = a.transposedIterator().collect()
+
+    // Note we get the extraneous 'e' that is lost by transpose()
+    assert b = [ 1, 'a', 2, 'b', 3, 'c', 4, 'd', 'e' ]
+
+And (passing a list of amounts):
+
+    // need the collect as we want the values from the Iterator
+    def c = a.transposedIterator().collect( [ 1, 2 ] )
+
+    // Note we get the extraneous 'e' that is lost by transpose()
+    assert c = [ 1, 'a', 'b', 2, 'c', 'd', 3, 'e', 4 ]
