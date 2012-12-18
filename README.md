@@ -157,51 +157,25 @@ And with a `childKey`:
 
     assert map == [dan:[value:'a',kids:[[subnode:[kids:[[item:[value:'a']]]]]]]]
 
-## Extended `merge` functionality for `ConfigObject`
-
-    static ConfigObject merge( Map self, Map other, Boolean sourcePrecedence )
-
-Boolean `sourcePrecedence` specifies that the source `ConfigObject` should not have it's existing key/value
-pair overwritten by a merge with another `ConfigObject`
-
-Example:
-
-        def config1 = """
-            config {
-                a = 1
-                b = 2
-                c = 3
-            }
-        """
-        def config2 = """
-            config {
-                a = 2
-                b = 2
-            }
-        """
-        def configObject1 = new ConfigSlurper().parse(config1)
-        def configObject2 = new ConfigSlurper().parse(config2)
-        def merge = configObject2.merge(configObject1)
-
-        def configObject3 = new ConfigSlurper().parse(config1)
-        def configObject4 = new ConfigSlurper().parse(config2)
-        def mergeWithSourcePrecedence = configObject4.merge(configObject3,true)
-
-        // overwrote config2's value
-        assert merge.config.a == 1
-        // preserved config2's value
-        assert mergeWithSourcePrecedence.config.a == 2
-
-        // config2 inherited value from config1
-        assert merge.config.c == 3
-        // config2 inherited from config1
-        assert mergeWithSourcePrecedence.config.c == merge.config.c
-
 ## `rand` functionality for `List`
 
     static <T> T rand( List<T> self )
+    static <T> T rand( List<T> self, int n ) {
+    static <T> T rand( List<T> self, int n, boolean allowDuplicates ) {
+    static <T> T rand( List<T> self, int n, boolean allowDuplicates, Random r ) {
 
 Randomly select an element from a list.
+
+- The first form returns a single random element from the List.
+- The second form returns `n` random elements from the List (duplicates allowed)
+- The third form allows you to specify no duplicates (by passing `false` as the third parameter)
+- The fourth form allows you to set the Random object to be used in the processing.  This allows tests to specify a seed so reproducability is assured.
+
+The returned list is of the same class as the input.
+
+If you ask for `0` items, you get an empty list returned.
+
+If you ask for more unique elements than there are items in the list, this throws an `IllegalArgumentException`
 
 Example:
 
