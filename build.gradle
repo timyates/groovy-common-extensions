@@ -11,7 +11,7 @@ repositories {
 dependencies {
   groovy 'org.codehaus.groovy:groovy-all:2.0.5'
   testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
-  testCompile fileTree( dir:'build/libs/', includes:[ "groovy-common-extensions-${version}.jar" ] )
+  testCompile fileTree( dir:'build/libs/', includes:[ "groovy-common-extensions-${version}.jar".toString() ] )
 }
 
 group = 'com.bloidonia'
@@ -45,7 +45,6 @@ test.dependsOn( jar )
 
 groovydoc {
   use             = true
-  groovyClasspath = configurations.compile // http://issues.gradle.org/browse/GRADLE-1391
   destinationDir  = new File( "${project.buildDir.path}/groovydoc", project.version )
   header = '<a href="https://github.com/timyates/groovy-common-extensions">groovy-common-extensions</a>'
   footer = null
@@ -70,5 +69,5 @@ artifacts {
 }
 
 task wrapper(type: Wrapper) {
-  gradleVersion = '1.2'
+  gradleVersion = '1.3'
 }
