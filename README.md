@@ -239,7 +239,7 @@ you can (with Groovy) call `a.transpose()` ie:
 
 This new functionality returns an iterator, and you can specify how many reseults of each list to expect. So:
 
-    // need the collect as we want the values from the Iterator
+    // We need the collect as we want the values from the Iterator
     def b = a.transposedIterator().collect()
 
     // Note we get the extraneous 'e' that is lost by transpose()
@@ -247,8 +247,8 @@ This new functionality returns an iterator, and you can specify how many reseult
 
 And (passing a list of amounts):
 
-    // need the collect as we want the values from the Iterator
-    def c = a.transposedIterator().collect( [ 1, 2 ] )
+    // So we want 1 element of list 1 followed by 2 of list 2 (repeated till exhaustion)
+    def c = a.transposedIterator( [ 1, 2 ] ).collect()
 
-    // Note we get the extraneous 'e' that is lost by transpose()
+    // Note we run out of list 2 after the 'e', so just get the last 4 from list 1
     assert c = [ 1, 'a', 'b', 2, 'c', 'd', 3, 'e', 4 ]
