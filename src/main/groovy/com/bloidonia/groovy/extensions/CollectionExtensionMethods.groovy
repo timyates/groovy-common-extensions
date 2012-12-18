@@ -23,4 +23,50 @@ class CollectionExtensionMethods {
       }
     }
   }
+
+  static <T> T rand( List<T> self ) {
+    rand( self, 1, true, new Random() )
+  }
+
+  static <T> T rand( List<T> self, int n ) {
+    rand( self, n, false, new Random() )
+  }
+
+  static <T> T rand( List<T> self, int n, boolean allowDuplicates ) {
+    rand( self, n, allowDuplicates, new Random() )
+  }
+
+  static <T> T rand( List<T> self, int n, boolean allowDuplicates, Random r ) {
+    List<T> ret = createSimilarList( self, 0 )
+    if( n <= 0 ) {
+      return ret
+    }
+    if( allowDuplicates ) {
+      ret = (1..n).collect {
+        self[ r.nextInt( self.size() ) ]
+      }
+    }
+    else {
+      if( n > self.size() ) {
+        throw new IllegalArgumentException( "Cannot have $n unique items from a list containing only ${self.size()}" )
+      }
+      int remain = self.size()
+      int i = 0
+      while( n > 0 ) {
+        if( r.nextInt( remain ) < n ) {
+          ret << self[ i ]
+          n--
+        }
+        remain--
+        i++
+      }
+      ret
+    }
+    if( n == 1 ) {
+      ret.head()
+    }
+    else {
+      ret
+    }
+  }
 }

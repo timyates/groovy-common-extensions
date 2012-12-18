@@ -156,3 +156,29 @@ And with a `childKey`:
     def map = xml.toMap( 'kids' )
 
     assert map == [dan:[value:'a',kids:[[subnode:[kids:[[item:[value:'a']]]]]]]]
+
+## `rand` functionality for `List`
+
+    static <T> T rand( List<T> self )
+    static <T> T rand( List<T> self, int n ) {
+    static <T> T rand( List<T> self, int n, boolean allowDuplicates ) {
+    static <T> T rand( List<T> self, int n, boolean allowDuplicates, Random r ) {
+
+Randomly select an element from a list.
+
+- The first form returns a single random element from the List.
+- The second form returns `n` random elements from the List (duplicates allowed)
+- The third form allows you to specify no duplicates (by passing `false` as the third parameter)
+- The fourth form allows you to set the Random object to be used in the processing.  This allows tests to specify a seed so reproducability is assured.
+
+The returned list is of the same class as the input.
+
+If you ask for `0` items, you get an empty list returned.
+
+If you ask for more unique elements than there are items in the list, this throws an `IllegalArgumentException`
+
+Example:
+
+    def list = [1, 2, 3, 4, 5]
+    def randomInt = list.rand()
+    assert randomInt in list
