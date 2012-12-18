@@ -160,16 +160,16 @@ And with a `childKey`:
 ## `rand` functionality for `List`
 
     static <T> T rand( List<T> self )
-    static <T> T rand( List<T> self, int n ) {
-    static <T> T rand( List<T> self, int n, boolean allowDuplicates ) {
-    static <T> T rand( List<T> self, int n, boolean allowDuplicates, Random r ) {
+    static <T> List<T> rand( List<T> self, int n ) {
+    static <T> List<T> rand( List<T> self, int n, boolean allowDuplicates ) {
+    static <T> List<T> rand( List<T> self, int n, boolean allowDuplicates, Random r ) {
 
 Randomly select an element from a list.
 
 - The first form returns a single random element from the List.
-- The second form returns `n` random elements from the List (duplicates allowed)
-- The third form allows you to specify no duplicates (by passing `false` as the third parameter)
-- The fourth form allows you to set the Random object to be used in the processing.  This allows tests to specify a seed so reproducability is assured.
+- The second form returns a `List` of `n` random elements from the List (duplicates allowed)
+- The third form allows you to specify no duplicates (by passing `false` as the third parameter) and returns a `List`
+- The fourth form also returns a `List` and also allows you to set the Random object to be used in the processing.  This allows tests to specify a seed so reproducability is assured.
 
 The returned list is of the same class as the input.
 

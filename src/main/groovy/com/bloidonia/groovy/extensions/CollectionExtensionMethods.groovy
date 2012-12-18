@@ -45,25 +45,25 @@ class CollectionExtensionMethods {
   }
 
   static <T> T rand( List<T> self ) {
-    rand( self, 1, true, new Random() )
+    rand( self, 1, true, new Random() )[0]
   }
 
-  static <T> T rand( List<T> self, int n ) {
+  static <T> List<T> rand( List<T> self, int n ) {
     rand( self, n, false, new Random() )
   }
 
-  static <T> T rand( List<T> self, int n, boolean allowDuplicates ) {
+  static <T> List<T> rand( List<T> self, int n, boolean allowDuplicates ) {
     rand( self, n, allowDuplicates, new Random() )
   }
 
-  static <T> T rand( List<T> self, int n, boolean allowDuplicates, Random r ) {
+  static <T> List<T> rand( List<T> self, int n, boolean allowDuplicates, Random r ) {
     List<T> ret = createSimilarList( self, 0 )
     if( n <= 0 ) {
       return ret
     }
     if( allowDuplicates ) {
-      ret = (1..n).collect {
-        self[ r.nextInt( self.size() ) ]
+      (1..n).each {
+        ret << self[ r.nextInt( self.size() ) ]
       }
     }
     else {
@@ -80,13 +80,7 @@ class CollectionExtensionMethods {
         remain--
         i++
       }
-      ret
     }
-    if( n == 1 ) {
-      ret.head()
-    }
-    else {
-      ret
-    }
+    ret
   }
 }
