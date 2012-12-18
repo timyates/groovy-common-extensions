@@ -24,12 +24,29 @@ import static org.codehaus.groovy.runtime.DefaultGroovyMethodsSupport.createSimi
  * @author dwoods
  */
 class CollectionExtensionMethods {
+  /**
+   * Sort a list based on a collection of Closures.  If the first closure fails to differentiate the objects in the
+   * list, it moves to the second, and continues until all Closures have been executed.
+   *
+   * @param self      The collection to sort
+   * @param mutate    Should the original list be mutated
+   * @param closures  The list of Closures used to sort the Collection
+   * @return          A sorted collection
+   */
   static Collection sort( Collection self, boolean mutate, Closure... closures ) {
     self.sort( mutate ) { a, b ->
       closures.findResult { cls -> cls( a ) <=> cls( b ) ?: null }
     }
   }
 
+  /**
+   * Take up to n items from a List.  If n is negative, take off the end of the list, else delegate to the existing
+   * Groovy take method.
+   *
+   * @param self  The collection to take items from.
+   * @param n     The number of elements to take.
+   * @return      A list of elements up to n long.
+   */
   static List take( List self, int n ) {
     int absn = Math.abs( n )
     if( n >= 0 || absn == self.size() ) {
@@ -44,18 +61,48 @@ class CollectionExtensionMethods {
     }
   }
 
+  /**
+   * Select a single random element from a List
+   *
+   * @param self The List to select from
+   * @return     A random element from the List
+   */
   static <T> T rand( List<T> self ) {
     rand( self, 1, true, new Random() )[0]
   }
 
+  /**
+   * Select a list of n unique items from the List
+   *
+   * @param self The List to select from
+   * @param n    The number of items to select
+   * @return     A List containing the random elements
+   */
   static <T> List<T> rand( List<T> self, int n ) {
     rand( self, n, false, new Random() )
   }
 
+  /**
+   * Select a list of n items from the List
+   *
+   * @param self             The List to select from
+   * @param n                The number of items to select
+   * @param allowDuplicates  If true, the same element can be selected more than once.
+   * @return                 A List containing the random elements
+   */
   static <T> List<T> rand( List<T> self, int n, boolean allowDuplicates ) {
     rand( self, n, allowDuplicates, new Random() )
   }
 
+  /**
+   * Select a list of n items from the List
+   *
+   * @param self             The List to select from
+   * @param n                The number of items to select
+   * @param allowDuplicates  If true, the same element can be selected more than once.
+   * @param r                An instance of Random so we can set a seed to get reproducible random results
+   * @return
+   */
   static <T> List<T> rand( List<T> self, int n, boolean allowDuplicates, Random r ) {
     List<T> ret = createSimilarList( self, 0 )
     if( n <= 0 ) {
@@ -116,10 +163,23 @@ class CollectionExtensionMethods {
     }
   }
 
+  /**
+   * Return a TransposingIterator that returns an element from each list in turn.
+   *
+   * @param lists A List of Lists to cycle over
+   * @return      An Iterator that can be used to fetch an item from each list in turn
+   */
   static <T> Iterator<T> transposedIterator( List<List<T>> lists ) {
     transposedIterator( lists, [ 1 ] * lists.size() )
   }
 
+  /**
+   * Return a TransposingIterator that returns an element from each list in turn.
+   *
+   * @param lists    A List of Lists to cycle over
+   * @param amounts  The number to take from each list
+   * @return         An Iterator that can be used to fetch an item from each list in turn
+   */
   static <T> Iterator<T> transposedIterator( List<List<T>> lists, List<Integer> amounts ) {
     new TransposingIterator( lists, amounts )
   }
