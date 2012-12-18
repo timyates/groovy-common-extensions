@@ -1,5 +1,6 @@
 apply plugin: 'groovy'
 apply plugin: 'idea'
+apply plugin: 'maven'
 
 version = '0.4'
 
@@ -41,6 +42,32 @@ task generateModule << {
 // Hook up dependencies
 jar.dependsOn( generateModule ) 
 test.dependsOn( jar )
+
+groovydoc {
+  use             = true
+  groovyClasspath = configurations.compile // http://issues.gradle.org/browse/GRADLE-1391
+  destinationDir  = new File( "${project.buildDir.path}/groovydoc", project.version )
+  header = '<a href="https://github.com/timyates/groovy-common-extensions">groovy-common-extensions</a>'
+  footer = null
+
+  link 'http://download.oracle.com/javase/6/docs/api/',                 'java.'
+  link 'http://groovy.codehaus.org/api/',                               'groovy.', 'org.codehaus.groovy.'
+}
+
+task sourcesJar(type: Jar) {
+  classifier 'sources'
+  from sourceSets.main.allSource
+}
+
+task groovydocJar(type: Jar, dependsOn: groovydoc) {
+  classifier 'javadoc'
+  from groovydoc.destinationDir
+}
+
+artifacts {
+  archives sourcesJar
+  archives groovydocJar
+}
 
 task wrapper(type: Wrapper) {
   gradleVersion = '1.2'
