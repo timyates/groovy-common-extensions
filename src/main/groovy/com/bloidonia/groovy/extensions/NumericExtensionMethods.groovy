@@ -20,6 +20,11 @@ package com.bloidonia.groovy.extensions
  * @author Tim Yates
  */
 class NumericExtensionMethods {
+  /**
+   * <pre class="groovyTestCase">
+   *   assert 1.clamp( 3, 6 ) == 3
+   * </pre>
+   */
   static <T extends Comparable> T clamp( T self, T lower, T upper ) {
     self < lower ? lower : self > upper ? upper : self
   }
