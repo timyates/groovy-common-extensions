@@ -21,18 +21,49 @@ package com.bloidonia.groovy.extensions
  */
 class NumericExtensionMethods {
   /**
+   * Clamp a Comparable between a lower and upper bound
+   *
    * <pre class="groovyTestCase">
    *   assert 1.clamp( 3, 6 ) == 3
    * </pre>
+   *
+   * @param self   The Comparable to clamp
+   * @param lower  The lower bound
+   * @param upper  The upper bound
+   * @return       The comparable clamped to a value between lower and upper
    */
   static <T extends Comparable> T clamp( T self, T lower, T upper ) {
     self < lower ? lower : self > upper ? upper : self
   }
 
+  /**
+   * Clamp a Comparable between the lower and upper bound of a Range
+   *
+   * <pre class="groovyTestCase">
+   *   assert 1.clamp( 3..6 ) == 3
+   * </pre>
+   *
+   * @param self   The Comparable to clamp
+   * @param range  The range to clamp to
+   * @return       The comparable clamped to a value between the lower and upper bounds of the Range
+   */
   static <T extends Comparable> T clamp( T self, Range range ) {
     clamp( self, range.from, range.to )
   }
 
+  /**
+   * Clamp a Range so that it falls within the bounds of another Range
+   *
+   * <pre class="groovyTestCase">
+   *   assert (1..5).clamp( 3..6 ) == 3..5
+   *   assert (1..8).clamp( 3..6 ) == 3..6
+   *   assert (5..8).clamp( 3..6 ) == 5..6
+   * </pre>
+   *
+   * @param self   The Range to clamp
+   * @param range  The Range to clamp to
+   * @return       The Range with its upper and lower bounds clamped to those of the clamp range
+   */
   static Range clamp( Range self, Range range ) {
     self.class.newInstance( clamp( self.from, range.from, range.to ),
                             clamp( self.to, range.from, range.to ),
