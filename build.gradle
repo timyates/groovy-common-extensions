@@ -1,6 +1,16 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+
+  dependencies {
+    classpath 'org.gradle.api.plugins:gradle-nexus-plugin:0.2'
+  }
+}
+
 apply plugin: 'groovy'
 apply plugin: 'idea'
-apply plugin: 'maven'
+apply plugin: 'nexus'
 
 version = '0.4'
 
@@ -57,19 +67,46 @@ groovydoc {
   link 'http://groovy.codehaus.org/api/',                               'groovy.', 'org.codehaus.groovy.'
 }
 
-task sourcesJar(type: Jar) {
-  classifier 'sources'
-  from sourceSets.main.allSource
-}
-
 task groovydocJar(type: Jar, dependsOn: groovydoc) {
   classifier 'javadoc'
   from groovydoc.destinationDir
 }
 
 artifacts {
+  archives jar
   archives sourcesJar
   archives groovydocJar
+}
+
+modifyPom {
+  project {
+    name 'Groovy Common Extensions'
+    description 'A collection of extensions to Groovy 2+.'
+    url 'https://github.com/timyates/groovy-common-extensions'
+    inceptionYear '2012'
+
+    scm {
+      url 'https://github.com/timyates/groovy-common-extensions'
+      connection 'scm:https://github.com/timyates/groovy-common-extensions.git'
+      developerConnection 'scm:git://github.com/timyates/groovy-common-extensions.git'
+    }
+
+    licenses {
+      license {
+        name 'The Apache Software License, Version 2.0'
+        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+        distribution 'repo'
+      }
+    }
+
+    developers {
+      developer {
+        id 'tim_yates'
+        name 'Tim Yates'
+        email 'tim.yates@gmail.com'
+      }
+    }
+  }
 }
 
 task wrapper(type: Wrapper) {
