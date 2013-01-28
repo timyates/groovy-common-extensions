@@ -56,6 +56,7 @@ task generateModule << {
 // Hook up dependencies
 jar.dependsOn( generateModule ) 
 test.dependsOn( jar )
+uploadArchives.dependsOn( test )
 
 groovydoc {
   use             = true
