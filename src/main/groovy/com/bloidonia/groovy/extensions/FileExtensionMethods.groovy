@@ -25,6 +25,8 @@ import java.util.zip.ZipEntry
  * Extends {@link File} with common extension methods not found in Groovy core (currently ;)).
  *
  * @see java.io.File
+ * @author andresteingress
+ * @author Tim Yates
  */
 class FileExtensionMethods {
 
