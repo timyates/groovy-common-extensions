@@ -47,8 +47,8 @@ class NumericExtensionMethods {
    * @param range  The range to clamp to
    * @return       The comparable clamped to a value between the lower and upper bounds of the Range
    */
-  static <T extends Comparable> T clamp( T self, Range range ) {
-    clamp( self, range.from, range.to )
+  static <T extends Comparable> T clamp( T self, Range<T> range ) {
+    clamp( self, (T)range.from, (T)range.to )
   }
 
   /**
@@ -64,7 +64,7 @@ class NumericExtensionMethods {
    * @param range  The Range to clamp to
    * @return       The Range with its upper and lower bounds clamped to those of the clamp range
    */
-  static Range clamp( Range self, Range range ) {
+  static <T extends Comparable> Range<T> clamp( Range<T> self, Range<T> range ) {
     self.class.newInstance( clamp( self.from, range.from, range.to ),
                             clamp( self.to, range.from, range.to ),
                             self.reverse )
