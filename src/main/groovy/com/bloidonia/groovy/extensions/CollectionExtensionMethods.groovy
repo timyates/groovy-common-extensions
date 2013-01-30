@@ -168,6 +168,15 @@ class CollectionExtensionMethods {
   /**
    * Return a TransposingIterator that returns an element from each list in turn.
    *
+   * <pre class="groovyTestCase">
+   *   def left  = [   1,   2,   3      ]
+   *   def right = [ 'a', 'b', 'c', 'd' ]
+   *
+   *   def result = [left,right].transposedIterator().collect()
+   *
+   *   assert result == [ 1, 'a', 2, 'b', 3, 'c', 'd' ]
+   * </pre>
+   *
    * @param lists A List of Lists to cycle over
    * @return      An Iterator that can be used to fetch an item from each list in turn
    */
@@ -177,6 +186,15 @@ class CollectionExtensionMethods {
 
   /**
    * Return a TransposingIterator that returns an element from each list in turn.
+   *
+   * <pre class="groovyTestCase">
+   *   def left  = [   1,   2,   3      ]
+   *   def right = [ 'a', 'b', 'c', 'd' ]
+   *
+   *   def result = [left,right].transposedIterator( [ 1, 2 ] ).collect()
+   *
+   *   assert result == [ 1, 'a', 'b', 2, 'c', 'd', 3 ]
+   * </pre>
    *
    * @param lists    A List of Lists to cycle over
    * @param amounts  The number to take from each list
