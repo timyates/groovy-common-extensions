@@ -69,7 +69,7 @@ class ObjectExtensionMethods {
     }
     finally {
       [ self ].flatten().each {
-        if( it.respondsTo( 'close' ) ) {
+        if( it.respondsTo( 'close' )?.paramsCount.contains( 0 ) ) {
           it.close()
         }
       }
