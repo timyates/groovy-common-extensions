@@ -155,7 +155,7 @@ class FileExtensionMethods {
                 }
                 else {
                     final dir = new File(destination, entry.name)
-                    if( filter == null || filter( file ) ) {
+                    if( filter == null || filter( dir ) ) {
                         dir.mkdir()
 
                         unzippedFiles << dir
