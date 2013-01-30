@@ -133,7 +133,7 @@ class CollectionExtensionMethods {
 
   static class TransposingIterator<T> implements Iterator<T> {
     private int idx = 0
-    private List<Iterator> iter
+    private List<Iterator<T>> iter
     private List<Integer>  amts
    
     TransposingIterator( List<List> lists, List<Integer> amounts ) {
