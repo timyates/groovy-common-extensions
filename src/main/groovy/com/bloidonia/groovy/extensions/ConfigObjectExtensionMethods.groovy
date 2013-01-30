@@ -25,8 +25,8 @@ class ConfigObjectExtensionMethods {
       def configEntry = self[ entry.key ]
       if( configEntry == null ) {
         self[ entry.key ] = entry.value
-        continue
-      } else {
+      }
+      else {
         if( configEntry instanceof Map && configEntry.size() > 0 && entry.value instanceof Map ) {
           configEntry.merge( entry.value, sourcePrecedence )
         }
