@@ -21,6 +21,48 @@ package com.bloidonia.groovy.extensions
  */
 class ObjectExtensionMethods {
 
+  /**
+   * Will execute closure passing 'self' as a parameter to the closure.
+   *
+   * When the closure has run, self will be flattened (if it is a list)
+   * and close will be called on every item in it (if it responds to a
+   * zero-arg version of 'close').
+   *
+   * <pre class="groovyTestCase">
+   *   // A class that responds to close()
+   *   class A {
+   *     boolean isClosed = false
+   *     def close() {
+   *       isClosed = true
+   *     }
+   *   }
+   *
+   *   // Make an instance and test
+   *   def obj = new A()
+   *   def result = obj.withClosable {
+   *     'cool'
+   *   }
+   *
+   *   // Check the result
+   *   assert result == 'cool'
+   *   // Assert obj is closed
+   *   assert obj.isClosed
+   *
+   *   def list = [ new A(), 'tim', new A() ]
+   *   result = list.withClosable {
+   *     'also cool'
+   *   }
+   *
+   *   // Check the result
+   *   assert result == 'also cool'
+   *   // Assert all A instances are closed
+   *   assert list.grep( A )*.isClosed.every()
+   * </pre>
+   *
+   * @param self the object to call 'close' on after the closure has run
+   * @param c the closure to run
+   * @return the result of calling the closure
+   */
   static Object withClosable( Object self, Closure c ) {
     try {
       c( self )
