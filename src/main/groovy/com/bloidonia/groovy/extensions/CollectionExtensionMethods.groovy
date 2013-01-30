@@ -136,7 +136,7 @@ class CollectionExtensionMethods {
     private List<Iterator<T>> iter
     private List<Integer>  amts
    
-    TransposingIterator( List<List> lists, List<Integer> amounts ) {
+    TransposingIterator( List<List<T>> lists, List<Integer> amounts ) {
       iter = lists*.iterator()
       int i = 0
       amts = amounts.collectMany { [ i++ ] * it }
