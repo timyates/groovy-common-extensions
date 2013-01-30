@@ -54,7 +54,7 @@ class CollectionExtensionMethods {
       DefaultGroovyMethods.take( self, absn )
     }
     else {
-      createSimilarList( self, absn.clamp( 0, self.size() ) ).with { ret ->
+      createSimilarList( self, absn.clamp( 0, self.size() ) ).with { List ret ->
         ret.addAll( self[ (n.clamp(-self.size(),0))..-1 ] )
         ret
       }
