@@ -133,27 +133,29 @@ class CollectionExtensionMethods {
 
   static class TransposingIterator<T> implements Iterator<T> {
     private int idx = 0
-    private List<Iterator<T>> iter
-    private List<Integer>  amts
+    private List<Iterator<T>> iterators
+    private List<Integer> weights
    
     TransposingIterator( List<List<T>> lists, List<Integer> amounts ) {
-      iter = lists*.iterator()
-      int i = 0
-      amts = amounts.collectMany { [ i++ ] * it }
+      iterators = lists*.iterator()
+      weights = [amounts,0..<amounts.size()].transpose()
+                                            .collect { List<Integer> it ->
+        [ it[ 1 ] ] * it[ 0 ]
+      }.flatten()
     }
    
     private void moveIdx() {
-      idx = ++idx % amts.size()
+      idx = ++idx % weights.size()
     }
    
     @Override boolean hasNext() {
-      iter*.hasNext().any()
+      iterators*.hasNext().any()
     }
    
     @Override T next() {
       if( !hasNext() ) { throw new NoSuchElementException() }
-      while( !iter[ amts[ idx ] ].hasNext() ) { moveIdx() }
-      T ret = iter[ amts[ idx ] ].next()
+      while( !iterators[ weights[ idx ] ].hasNext() ) { moveIdx() }
+      T ret = iterators[ weights[ idx ] ].next()
       moveIdx()
       ret
     }
