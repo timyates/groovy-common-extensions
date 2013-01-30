@@ -23,22 +23,24 @@ public class ZipFileTests extends Specification {
 
     File dir, subdir
     File txt1, txt2, txt3
+    String content1 = 'Test 1', content2 = 'Test 2', content3 = 'This is Test 3'
+    int len1 = content1.length(), len2 = content2.length(), len3 = content3.length()
 
     def setup() {
-        dir = new File(System.properties['java.io.tmpdir'] as String, 'test/')
+        dir = new File( System.properties.'java.io.tmpdir', 'test/')
         dir.mkdirs()
 
         txt1 = new File(dir, 'test1.txt')
-        txt1.text = 'Test 1'
+        txt1.text = content1
 
         txt2 = new File(dir, 'test2.txt')
-        txt2.text = 'Test 2'
+        txt2.text = content2
 
         subdir = new File(dir, 'sub')
         subdir.mkdirs()
 
         txt3 = new File(subdir, 'test3.txt')
-        txt3.text = 'Test 3'
+        txt3.text = content3
     }
 
     def cleanup() {
@@ -64,6 +66,7 @@ public class ZipFileTests extends Specification {
             result == new File(dir.parent, "test.zip")
             files.size() == 2
             files*.name.sort() == [ 'test1.txt', 'test3.txt' ]
+            files*.length().sort() == [ len1, len3 ]
     }
 
     def 'zip and unzip filtered files in the given directory'() {
@@ -79,6 +82,7 @@ public class ZipFileTests extends Specification {
             result == new File(dir.parent, "test.zip")
             files.size() == 1
             files*.name == [ 'test3.txt' ]
+            files*.length() == [ len3 ]
     }
 
     def 'zip a single file'() {
@@ -113,10 +117,12 @@ public class ZipFileTests extends Specification {
 
         expect:
             files.size() == 3
-
             files[0].name.endsWith('test3.txt') && files[0].parent =~ "/test/sub"
             files[1].name.endsWith('test1.txt') && files[1].parent =~ "/test"
             files[2].name.endsWith('test2.txt') && files[2].parent =~ "/test"
+            files[0].length() == len3
+            files[1].length() == len1
+            files[2].length() == len2
     }
 
     def 'throw IllegalArgumentException if the file to be unzipped is not a zip file'() {
@@ -130,12 +136,12 @@ public class ZipFileTests extends Specification {
 
     def 'unzip single file'() {
         given:
-        File zippedFile = txt1.zip()
-        def files = zippedFile.unzip()
+            File zippedFile = txt1.zip()
+            def files = zippedFile.unzip()
 
         expect:
-        files.size() == 1
-
-        files[0].name.endsWith('test1.txt')
+            files.size() == 1
+            files[0].name.endsWith('test1.txt')
+            files[0].length() == len1
     }
 }
