@@ -147,11 +147,7 @@ class FileExtensionMethods {
 
                         def output = new FileOutputStream(file)
                         output.withStream {
-                            int len = 0;
-                            byte[] buffer = new byte[4096]
-                            while ((len = zipInput.read(buffer)) > 0){
-                                output.write(buffer, 0, len);
-                            }
+                            output << zipInput
                         }
 
                         unzippedFiles << file
