@@ -1,4 +1,4 @@
-language: groovy
+language: java
 jdk:
   - openjdk7
   - oraclejdk7
@@ -6,4 +6,4 @@ jdk:
 before_install:
   - "./gradlew --version"
 install: "./gradlew --stacktrace --quiet --no-color assemble"
-script: "./gradlew --stacktrace --quiet --no-color check"
+script: "./gradlew --info --no-color clean test"
