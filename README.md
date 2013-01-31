@@ -1,5 +1,7 @@
 # groovy-common-extensions
 
+[![Build Status](https://travis-ci.org/timyates/groovy-common-extensions.png)](https://travis-ci.org/timyates/groovy-common-extensions)
+
 Lets you add things I find commonly useful to the Groovy language via the extension
 system.
 
