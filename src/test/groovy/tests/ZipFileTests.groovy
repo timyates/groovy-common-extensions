@@ -117,12 +117,11 @@ public class ZipFileTests extends Specification {
 
         expect:
             files.size() == 3
-            files[0].name.endsWith('test3.txt') && files[0].parent =~ "/test/sub"
-            files[1].name.endsWith('test1.txt') && files[1].parent =~ "/test"
-            files[2].name.endsWith('test2.txt') && files[2].parent =~ "/test"
-            files[0].length() == len3
-            files[1].length() == len1
-            files[2].length() == len2
+            files.each { File it ->
+                it.name.endsWith('test1.txt') && it.parent =~ "/test" && it.length() == len1 ||
+                it.name.endsWith('test2.txt') && it.parent =~ "/test" && it.length() == len2 ||
+                it.name.endsWith('test3.txt') && it.parent =~ "/test/sub" && it.length() == len3
+            }
     }
 
     def 'throw IllegalArgumentException if the file to be unzipped is not a zip file'() {
