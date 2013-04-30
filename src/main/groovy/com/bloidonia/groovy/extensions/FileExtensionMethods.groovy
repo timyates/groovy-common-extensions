@@ -50,7 +50,7 @@ class FileExtensionMethods {
      * parent directory.
      *
      * @param self
-     * @param destination (optional), the ZIP file as the outcome of calling this method. If not provided,
+     * @param destination, the ZIP file as the outcome of calling this method. If <code>null</code>,
      *      destination will be created from this file's parent and file name (appending the *.zip extension).
      *
      * @return the zipped {@link java.io.File}
@@ -156,7 +156,7 @@ class FileExtensionMethods {
                 else {
                     final dir = new File(destination, entry.name)
                     if( filter == null || filter( dir ) ) {
-                        dir.mkdir()
+                        dir.mkdirs()
 
                         unzippedFiles << dir
                     }
