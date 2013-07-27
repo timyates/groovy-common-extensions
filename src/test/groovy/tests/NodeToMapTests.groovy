@@ -29,7 +29,7 @@ class NodeToMapTests extends Specification {
                     |  <key value="val" />
                     |  <key value="val2" />
                     |</dan>'''.stripMargin()
-        def map = new XmlSlurper().parseText(xml).toMap()
+        def map = _getMap(xml)
 
         expect:
         map instanceof Map
@@ -39,10 +39,35 @@ class NodeToMapTests extends Specification {
 
     def 'check xml to map coercion'() {
         given:
-        def xmlstr = '<dan value="a"><subnode><item value="a"/></subnode></dan>'
-        def xml = new XmlSlurper().parseText(xmlstr)
-        def map = xml.toMap()
+        def xml = '<dan value="a"><subnode><item value="a"/></subnode></dan>'
+        def map = _getMap(xml)
+
         expect:
         map == [dan: [value: 'a', subnode: [item: [value: 'a']]]]
+    }
+
+    def 'check nested without attrs'() {
+        given:
+        def xml = '<dan><cool>maybe</cool></dan>'
+        def map = _getMap(xml)
+
+        expect:
+        map == [dan: [ cool: "maybe" ] ]
+    }
+
+    def 'test angry schema design'() {
+        given:
+        def xml = '''<dan cool="yes">
+                     |  <cool>maybe</cool>
+                     |</dan>
+                  '''.stripMargin()
+        def map = _getMap(xml)
+
+        expect:
+        map == [dan: [cool: ['yes', 'maybe']]]
+    }
+
+    def _getMap(xml) {
+        new XmlSlurper().parseText(xml).toMap()
     }
 }

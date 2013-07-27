@@ -23,21 +23,16 @@ import groovy.util.slurpersupport.NodeChild
  * Date: 11/20/12
  */
 class NodeChildExtensionMethods {
-    static Map toMap( NodeChild self ) {
-        [
-                (self.name()): [ *:self.attributes() ] <<
-                        ( self.children().size() ?
-                                self.children().inject([:]) { m, c ->
-                                    c.toMap().each { k, v ->
-                                        def val = m[k]
-                                        if (val) {
-                                            m[k] = [val]
-                                            m[k] << v
-                                        } else m[k] = v
-                                    }
-                                    m
-                                }
-                                : [:] )
-        ]
+    static Map toMap( NodeChild self, def m=[:] ) {
+        m[self.name()] = self.attributes() ? [*:self.attributes()] : self.text()
+        if (self.children().size()) {
+            self.children().each { c ->
+                c.toMap().inject(m[self.name()]) { r, k, v ->
+                    if (r instanceof Map) m[self.name()][k]=(r[k])?[r[k]]<<v:v
+                    else m[self.name()]=[:].with{it[k]=v;it}
+                }
+            }
+        }
+        m
     }
 }
