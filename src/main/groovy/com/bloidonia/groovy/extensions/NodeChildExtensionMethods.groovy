@@ -28,8 +28,16 @@ class NodeChildExtensionMethods {
         if (self.children().size()) {
             self.children().each { c ->
                 c.toMap().inject(m[self.name()]) { r, k, v ->
-                    if (r instanceof Map) m[self.name()][k]=(r[k])?[r[k]]<<v:v
-                    else m[self.name()]=[:].with{it[k]=v;it}
+                    if (r instanceof Map) {
+                        if (r[k] && (r[k] instanceof List)) {
+                            m[self.name()][k] << v
+                        } else if (r[k] && !(r[k] instanceof List)) {
+                            m[self.name()][k] = [r[k]] << v
+                        } else {
+                            m[self.name()][k] = v
+                        }
+                    }
+                    else  { m[self.name()]=[:].with{it[k]=v;it} }
                 }
             }
         }
