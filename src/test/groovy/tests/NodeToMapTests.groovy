@@ -23,6 +23,20 @@ import spock.lang.Specification
  * Date: 11/20/12
  */
 class NodeToMapTests extends Specification {
+    def 'check xml string to node to map coercion with children'() {
+        given:
+        def xml = '''<dan id="1234" attr="attrValue">
+                    |  <key value="val" />
+                    |  <key value="val2" />
+                    |</dan>'''.stripMargin()
+        def map = _getMap( xml, '_children' )
+
+        expect:
+        map instanceof Map
+        map.dan._children.size() == 2
+        map.dan._children.key[1].value == 'val2'
+    }
+
     def 'check xml to map coercion with children'() {
         given:
         def xml = '''<dan id="1234" attr="attrValue">
@@ -67,7 +81,7 @@ class NodeToMapTests extends Specification {
         map == [dan: [cool: ['yes', 'maybe']]]
     }
 
-    def _getMap(xml) {
-        new XmlSlurper().parseText(xml).toMap()
+    def _getMap(xml, childPrefix=null) {
+        new XmlSlurper().parseText(xml).toMap( childPrefix )
     }
 }
