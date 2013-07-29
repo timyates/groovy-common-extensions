@@ -19,8 +19,8 @@ package tests
 import spock.lang.Specification
 
 /**
- * User: dwoods
- * Date: 11/20/12
+ * @author Dan Woods
+ * @author Tim Yates
  */
 class NodeToMapTests extends Specification {
     def 'check xml string to node to map coercion with children'() {

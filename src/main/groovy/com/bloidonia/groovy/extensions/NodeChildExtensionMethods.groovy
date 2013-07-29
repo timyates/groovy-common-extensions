@@ -19,8 +19,8 @@ package com.bloidonia.groovy.extensions
 import groovy.util.slurpersupport.NodeChild
 
 /**
- * User: dan-woods
- * Date: 11/20/12
+ * @author Dan Woods
+ * @author Tim Yates
  */
 class NodeChildExtensionMethods {
     static Map toMap( NodeChild self ) {
