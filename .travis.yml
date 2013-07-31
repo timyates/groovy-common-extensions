@@ -1,7 +1,4 @@
 language: groovy
 jdk:
   - oraclejdk7
-before_install:
-  - "./gradlew --version"
-install: "./gradlew --version"
-script: "./gradlew -q test"
+install: true
