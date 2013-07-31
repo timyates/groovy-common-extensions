@@ -1,16 +1,7 @@
-buildscript {
-  repositories {
-    mavenCentral()
-  }
-
-  dependencies {
-    classpath 'org.gradle.api.plugins:gradle-nexus-plugin:0.2'
-  }
-}
-
 apply plugin: 'groovy'
 apply plugin: 'idea'
-apply plugin: 'nexus'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
 sourceCompatibility=1.6
 targetCompatibility=1.6
@@ -76,38 +67,58 @@ task groovydocJar(type: Jar, dependsOn: groovydoc) {
   from groovydoc.destinationDir
 }
 
+task sourcesJar(type: Jar) {
+  from sourceSets.main.allSource
+  classifier = 'sources'
+}
+
 artifacts {
   archives jar
   archives sourcesJar
   archives groovydocJar
 }
 
-modifyPom {
-  project {
-    name 'Groovy Common Extensions'
-    description 'A collection of extensions to Groovy 2+.'
-    url 'https://github.com/timyates/groovy-common-extensions'
-    inceptionYear '2012'
+signing {
+  sign configurations.archives
+}
 
-    scm {
-      url 'https://github.com/timyates/groovy-common-extensions'
-      connection 'scm:https://github.com/timyates/groovy-common-extensions.git'
-      developerConnection 'scm:git://github.com/timyates/groovy-common-extensions.git'
-    }
-
-    licenses {
-      license {
-        name 'The Apache Software License, Version 2.0'
-        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-        distribution 'repo'
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+ 
+      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        authentication(userName: sonatypeUsername, password: sonatypePassword)
       }
-    }
+ 
+      pom.project {
+        name 'Groovy Common Extensions'
+        packaging 'jar'
+        description 'A collection of extensions to Groovy 2+.'
+        url 'https://github.com/timyates/groovy-common-extensions'
+        inceptionYear '2012'
 
-    developers {
-      developer {
-        id 'tim_yates'
-        name 'Tim Yates'
-        email 'tim.yates@gmail.com'
+        scm {
+          url 'https://github.com/timyates/groovy-common-extensions'
+          connection 'scm:https://github.com/timyates/groovy-common-extensions.git'
+          developerConnection 'scm:git://github.com/timyates/groovy-common-extensions.git'
+        }
+
+        licenses {
+          license {
+            name 'The Apache Software License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            distribution 'repo'
+          }
+        }
+
+        developers {
+          developer {
+            id 'tim_yates'
+            name 'Tim Yates'
+            email 'tim.yates@gmail.com'
+          }
+        }
       }
     }
   }
