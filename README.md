@@ -95,6 +95,26 @@ Examples:
       println it
     }
 
+## `tap`
+
+    static Object tap( Object self, Closure c ) {
+
+Taken [from Ruby](http://ruby-doc.org/core-2.0/Object.html#method-i-tap), the `tap` method executes the closure using the object as the
+delegate - internally, it just calls `self.with c` and then it returns `self`.
+
+This allows you to `tap` into a method chain:
+
+    def m = (1..10)                         .tap { println "original ${it}" }
+                   .findAll { it % 2 == 0 } .tap { println "evens    ${it}" }
+                   .collect { it * it }     .tap { println "squares  ${it}" }
+    // prints:
+    //    original [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    //    evens    [2, 4, 6, 8, 10]
+    //    squares  [4, 16, 36, 64, 100]
+
+    // and returns:
+    assert m == [4, 16, 36, 64, 100]
+
 ## `zip` and `unzip`
 
     static File zip ( File self )
