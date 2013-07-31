@@ -75,4 +75,34 @@ class ObjectExtensionMethods {
       }
     }
   }
+
+  /**
+   * Taken from Ruby, the <code>tap</code> method executes the closure
+   * using the object as the delegate &ndash; internally, it just calls
+   * <code>self.with c</code> and then it returns the object it was
+   * called on.
+   *
+   * This allows you to <i>tap</i> into a method chain
+   *
+   * <pre class="groovyTestCase">
+   * def m = (1..10)                         .tap { println "original ${it}" }
+   *                .findAll { it % 2 == 0 } .tap { println "evens    ${it}" }
+   *                .collect { it * it }     .tap { println "squares  ${it}" }
+   * // prints:
+   * //    original [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+   * //    evens    [2, 4, 6, 8, 10]
+   * //    squares  [4, 16, 36, 64, 100]
+   * // and returns:
+   *
+   * assert m == [4, 16, 36, 64, 100]
+   * </pre>
+   *
+   * @param self the object to call the delegate closure on
+   * @param c the closure to run
+   * @return the the object this method was called on
+   */
+  static Object tap( Object self, Closure c ) {
+    self.with c
+    self
+  }
 }
