@@ -3,5 +3,5 @@ jdk:
   - oraclejdk7
 before_install:
   - "./gradlew --version"
-install: "./gradlew -q assemble"
-script: "./gradlew -q test"
+script:
+  - "./gradlew -q test"
