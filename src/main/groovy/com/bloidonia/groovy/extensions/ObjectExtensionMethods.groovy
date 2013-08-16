@@ -97,6 +97,7 @@ class ObjectExtensionMethods {
    * assert m == [4, 16, 36, 64, 100]
    * </pre>
    *
+   * @since 0.5
    * @param self the object to call the delegate closure on
    * @param c the closure to run
    * @return the the object this method was called on
