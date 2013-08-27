@@ -39,7 +39,7 @@ task generateModule << {
   new File( "$buildDir/classes/main/META-INF/services" ).with { f ->
     f.mkdirs()
     new File( f, 'org.codehaus.groovy.runtime.ExtensionModule' ).withWriter { w ->
-      w.writeLine 'moduleName=groovy-stream'
+      w.writeLine 'moduleName=groovy-common-extensions'
       w.writeLine "moduleVersion=$version"
       w.writeLine "extensionClasses=$extensionFiles"
       w.writeLine 'staticExtensionClasses='
