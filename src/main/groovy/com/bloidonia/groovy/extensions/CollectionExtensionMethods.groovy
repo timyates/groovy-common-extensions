@@ -22,6 +22,7 @@ import static org.codehaus.groovy.runtime.DefaultGroovyMethodsSupport.createSimi
 /**
  * @author Tim Yates
  * @author dwoods
+ * @author Andrew Taylor
  */
 class CollectionExtensionMethods {
   /**
@@ -129,6 +130,83 @@ class CollectionExtensionMethods {
       }
     }
     ret
+  }
+
+  /**
+   * Select a single random element from an Iterator
+   *
+   * @param self The Iterator to select from
+   * @return     A random element from the List
+   */
+  static <T> T rand( Iterator<T> self ) {
+    rand( self, 1, true, new Random() )[0]
+  }
+
+  /**
+   * Select a list of n unique items from the Iterator
+   *
+   * @param self The Iterator to select from
+   * @param n    The number of items to select
+   * @return     A List containing the random elements
+   */
+  static <T> List<T> rand( Iterator<T> self, int n ) {
+    rand( self, n, false, new Random() )
+  }
+
+  /**
+   * Select a list of n items from the Iterator
+   *
+   * @param self             The Iterator to select from
+   * @param n                The number of items to select
+   * @param allowDuplicates  If true, the same element can be selected more than once.
+   * @return                 A List containing the random elements
+   */
+  static <T> List<T> rand( Iterator<T> self, int n, boolean allowDuplicates ) {
+    rand( self, n, allowDuplicates, new Random() )
+  }
+
+  /**
+   * Select a list of n random items from the Iterator
+   *
+   * @param self             The Iterator to select from
+   * @param n                The number of items to select
+   * @param allowDuplicates  If true, the same element can be selected more than once.
+   * @param r                An instance of Random so we can set a seed to get reproducible random results
+   * @return                 A List containing the random elements
+   */
+  static <T> List<T> rand( Iterator<T> self, int n, boolean allowDuplicates, Random rnd ) {
+    List<T> result
+
+    if (allowDuplicates) {
+
+      int i = 2
+      result = [self.next()] * n 
+      while (self.hasNext()) {
+        T item = self.next()
+        for (int j = 0; j < n; j++) {
+          if (rnd.nextInt(i) == 0) {
+            result[j] = item
+          }
+        }
+        i++
+      }
+
+    } else {
+
+      result = self.take(n).toList()
+      Collections.shuffle(result)
+      int i = n + 1
+      while( self.hasNext() ) {
+        int j = rnd.nextInt(i)
+        T item = self.next()
+        if( j < n ) {
+          result[j] = item
+        }
+        i++
+      }
+    }
+
+    result
   }
 
   static class TransposingIterator<T> implements Iterator<T> {

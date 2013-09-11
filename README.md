@@ -174,17 +174,22 @@ And with a `childKey`:
 
     assert map == [dan:[value:'a',kids:[[subnode:[kids:[[item:[value:'a']]]]]]]]
 
-## `rand` functionality for `List`
+## `rand` functionality for `List` and `Iterator`
 
     static <T> T rand( List<T> self )
     static <T> List<T> rand( List<T> self, int n ) {
     static <T> List<T> rand( List<T> self, int n, boolean allowDuplicates ) {
     static <T> List<T> rand( List<T> self, int n, boolean allowDuplicates, Random r ) {
 
-Randomly select an element from a list.
+    static <T> T rand( Iterator<T> self )
+    static <T> List<T> rand( Iterator<T> self, int n )
+    static <T> List<T> rand( Iterator<T> self, int n, boolean allowDuplicates )
+    static <T> List<T> rand( Iterator<T> self, int n, boolean allowDuplicates, Random r )
 
-- The first form returns a single random element from the List.
-- The second form returns a `List` of `n` random elements from the List (duplicates allowed)
+Randomly select an element from a list or iterator.
+
+- The first form returns a single random element from the List or Iterator.
+- The second form returns a `List` of `n` random elements from the List or Iterator (duplicates allowed)
 - The third form allows you to specify no duplicates (by passing `false` as the third parameter) and returns a `List`
 - The fourth form also returns a `List` and also allows you to set the Random object to be used in the processing.  This allows tests to specify a seed so reproducability is assured.
 
@@ -193,6 +198,8 @@ The returned list is of the same class as the input.
 If you ask for `0` items, you get an empty list returned.
 
 If you ask for more unique elements than there are items in the list, this throws an `IllegalArgumentException`
+
+When `rand` is called on an Iterator, the entire Iterator is consumed until hasNext() is false and the returned elements are chosen from all the items iterated over with uniform probability.
 
 Example:
 
