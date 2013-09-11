@@ -98,23 +98,13 @@ class CollectionTests extends Specification {
       list.iterator().rand( 3 ).every { it in list }
   }
 
-  def 'cannot get more unique results from iterator than there are results'() {
-    setup:
-      def list = 0..5
-    when:
-      list.iterator().rand( 7, false )
-    then:
-      IllegalArgumentException ex = thrown()
-      ex.message == 'Cannot have 7 unique items from an iterator with only 6'
-  }
-
   def 'check uniqueness of random iterator elements'() {
     given:
       def list = 0..99
       def size = list.size()
       def rand = list.iterator().rand( size, false )
     expect:
-      rand.unique().unique()
+      rand.unique()
   }
 
 }

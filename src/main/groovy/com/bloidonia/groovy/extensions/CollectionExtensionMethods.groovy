@@ -194,6 +194,7 @@ class CollectionExtensionMethods {
     } else {
 
       result = self.take(n).toList()
+      Collections.shuffle(result)
       int i = n + 1
       while( self.hasNext() ) {
         int j = rnd.nextInt(i)
@@ -202,9 +203,6 @@ class CollectionExtensionMethods {
           result[j] = item
         }
         i++
-      }
-      if (result.size() < n) {
-        throw new IllegalArgumentException( "Cannot have $n unique items from an iterator with only ${result.size()}" )
       }
     }
 
