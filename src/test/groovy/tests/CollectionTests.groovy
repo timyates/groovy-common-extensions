@@ -82,4 +82,29 @@ class CollectionTests extends Specification {
       1..10 as LinkedList | LinkedList
       1..10 as Vector     | Vector
   }
+
+  def 'check random itertor elements'() {
+    given:
+      def range = 1..10
+      def iter = range.iterator()
+    expect:
+      iter.rand() in range
+  }
+
+  def 'check multiple random iterator elements'() {
+    given:
+      def list = 0..99
+    expect:
+      list.iterator().rand( 3 ).every { it in list }
+  }
+
+  def 'check uniqueness of random iterator elements'() {
+    given:
+      def list = 0..99
+      def size = list.size()
+      def rand = list.iterator().rand( size, false )
+    expect:
+      rand.unique()
+  }
+
 }
