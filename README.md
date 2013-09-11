@@ -200,6 +200,19 @@ Example:
     def randomInt = list.rand()
     assert randomInt in list
 
+## `rand` functionality for `Iterator`
+
+    static <T> T rand( Iterator<T> self )
+    static <T> T rand( Iterator<T> self, Random r )
+
+Randomly select an element from a iterator where the length is not
+necessarily known ahead of time.
+
+- The first form returns a single random element from the Iterator.
+- The second form also allows you to set the Random object to be used in the processing.  This allows tests to specify a seed so reproducability is assured.
+
+The entire Iterator is consumed until hasNext() is false and the returned element is chosen from all the items iterated over with uniform probability.
+
 ## Extended `merge` functionality for `ConfigObject`
 
     static ConfigObject merge( Map self, Map other, Boolean sourcePrecedence )

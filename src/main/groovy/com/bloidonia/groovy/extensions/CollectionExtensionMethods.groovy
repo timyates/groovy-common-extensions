@@ -131,6 +131,34 @@ class CollectionExtensionMethods {
     ret
   }
 
+  /**
+   * Select a single random element from an Iterator
+   *
+   * @param self The Iterator to select from
+   * @return     A random element from the List
+   */
+  static <T> T rand( Iterator<T> self ) {
+    rand( self, new Random() )
+  }
+
+  /**
+   * Select a single random element from an Iterator
+   *
+   * @param self The Iterator to select from
+   * @return     A random element from the List
+   */
+  static <T> T rand( Iterator<T> self, Random r ) {
+    def k = 2
+    T chosen = self.next()
+    while (self.hasNext()) {
+      T n = self.next()
+      if (r.nextDouble() < 1.0D / k) {
+        chosen = n
+      }
+    }
+    chosen
+  }
+
   static class TransposingIterator<T> implements Iterator<T> {
     private int idx = 0
     private List<Iterator<T>> iterators
