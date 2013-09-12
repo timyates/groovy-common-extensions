@@ -38,6 +38,18 @@ class CollectionTests extends Specification {
       list.rand( 3 ).every { it in list }
   }
 
+  def 'check n=size actually does something'() {
+    given:
+      def list = 0..9
+      def results = (1..10).collect {
+        list.rand( list.size(), false, new Random( it ) )
+      }
+    expect:
+      results.each { println it }
+      results.size() == 10
+      results.unique().size() != 1
+  }
+
   def 'check reproducability'() {
     given:
       def list = 0..99

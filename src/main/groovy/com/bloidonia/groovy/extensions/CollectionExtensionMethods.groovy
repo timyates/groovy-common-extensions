@@ -109,24 +109,14 @@ class CollectionExtensionMethods {
     if( n <= 0 ) {
       return ret
     }
-    if( allowDuplicates ) {
-      (1..n).each {
-        ret << self[ r.nextInt( self.size() ) ]
-      }
+    if( !allowDuplicates && n > self.size() ) {
+      throw new IllegalArgumentException( "Cannot have $n unique items from a list containing only ${self.size()}" )
     }
-    else {
-      if( n > self.size() ) {
-        throw new IllegalArgumentException( "Cannot have $n unique items from a list containing only ${self.size()}" )
-      }
-      int remain = self.size()
-      int i = 0
-      while( n > 0 ) {
-        if( r.nextInt( remain ) < n ) {
-          ret << self[ i ]
-          n--
-        }
-        remain--
-        i++
+    (1..n).each {
+      int idx = r.nextInt( self.size() )
+      ret << self[ idx ]
+      if( !allowDuplicates ) {
+        self = [ *self.take( idx ), *self.drop( idx + 1 ) ]
       }
     }
     ret
