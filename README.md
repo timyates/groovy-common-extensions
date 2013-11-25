@@ -281,7 +281,7 @@ And (passing a list of amounts):
 
     static <V extends Number> AverageStats<V> average( Collection<V> collection )
 
-Given a colelction of Numbers, ie:
+Given a collection of Numbers, ie:
 
     def a = 1..10
 
