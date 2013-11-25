@@ -311,3 +311,19 @@ However, the standard deviation shows that they are very different sequences of 
     println a.average()
     // prints: "AverageStats( mean:50.5, median:50.5, variance:833.25, stdDev:28.86607004772212 )"
     println b.average()
+
+## Closure.`withDelegate`
+
+Allows setting the `delegate` of a `Closure` in-line:
+
+    static <T> Closure<T> withDelegate( Closure<T> self, Object delegate )
+    static <T> Closure<T> withDelegate( Closure<T> self, Object delegate, int strategy )
+
+So you can do:
+
+    def testClosure = { num ->
+        num + val
+    }
+
+    def value = testClosure.withDelegate( [ val: 4 ] )( 3 )
+    assert value == 7
