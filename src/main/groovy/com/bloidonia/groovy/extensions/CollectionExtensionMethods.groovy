@@ -271,4 +271,51 @@ class CollectionExtensionMethods {
   static <T> Iterator<T> transposedIterator( List<List<T>> lists, List<Integer> amounts ) {
     new TransposingIterator( lists, amounts )
   }
+
+  @groovy.transform.Immutable( knownImmutables=[ 'median' ])
+  public static class AverageStats<V extends Number> {
+    Double mean
+    V median
+    Double variance
+    Double stdDev
+
+    String toString() {
+      "AverageStats( mean:$mean, median:$median, variance:$variance, stdDev:$stdDev )"
+    }
+  }
+
+  /**
+   * Calculate the mean, median, variance and standard deviation of a Collection of 
+   * Numbers
+   *
+   * <pre class="groovyTestCase">
+   *   def avg = (1..10).average()
+   *
+   *   assert avg.mean == 5.5
+   *   assert avg.median == 5.5
+   *   assert avg.variance == 8.25
+   *   assert String.format( '%.5g', avg.stdDev ) == '2.8723'
+   * </pre>
+   *
+   * @param collection The {@code Collection} of {@code Number} elements to generate stats for
+   * @return           A populated {@code AverageStats} object
+   */
+  static <V extends Number> AverageStats<V> average( Collection<V> collection ) {
+    int size        = collection.size()
+    V sum           = collection.sum()
+    int zsize       = size - 1
+    V median        = size % 2 == 1 ? 
+                        collection.sort( false )[ ( zsize / 2 ).toInteger() ] :
+                        collection.sort( false )[ [ Math.floor( zsize / 2 ), Math.ceil( zsize / 2.0 ) ]*.toInteger() ].sum() / 2
+    double mean     = sum / size
+    double variance = 0
+
+    for( V num : collection ) {
+      variance += ( mean - num ) * ( mean - num )
+    }
+
+    variance /= size
+
+    new AverageStats( mean: mean, median: median, variance: variance, stdDev: Math.sqrt( variance ) )
+  }
 }

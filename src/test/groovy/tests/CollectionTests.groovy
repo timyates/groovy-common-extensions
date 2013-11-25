@@ -119,4 +119,43 @@ class CollectionTests extends Specification {
       rand.unique()
   }
 
+  def 'check integer averages'() {
+    given:
+      def avg = [ 332, 42, 100 ].average()
+    expect:
+      avg.mean     == 158
+      avg.median   == 100
+      String.format( '%.7g', avg.variance ) == '15698.67'
+      String.format( '%.6g', avg.stdDev )   == '125.294'
+  }
+
+  def 'check integer averages with even number of elements'() {
+    given:
+      def avg = [ 332, 998, 42, 100 ].average()
+    expect:
+      avg.mean     == 368
+      avg.median   == 216
+      String.format( '%.7g', avg.variance ) == '144074.0'
+      String.format( '%.6g', avg.stdDev )   == '379.571'
+  }
+
+  def 'check BigInteger averages'() {
+    given:
+      def avg = [ 332G, 42G, 100G ].average()
+    expect:
+      avg.mean     == 158
+      avg.median   == 100G
+      String.format( '%.7g', avg.variance ) == '15698.67'
+      String.format( '%.6g', avg.stdDev )   == '125.294'
+  }
+
+  def 'check BigDecimal averages with even number of elements'() {
+    given:
+      def avg = [ 332.0G, 998.0G, 42.0G, 100.0G ].average()
+    expect:
+      avg.mean     == 368
+      avg.median   == 216.0G
+      String.format( '%.7g', avg.variance ) == '144074.0'
+      String.format( '%.6g', avg.stdDev )   == '379.571'
+  }
 }

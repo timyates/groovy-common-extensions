@@ -9,7 +9,7 @@ Obviously requires at least Groovy 2.0.5 (so that the extension system exists)
 
 Usage:
 
-    @Grab( 'com.bloidonia:groovy-common-extensions:0.5.3' )
+    @Grab( 'com.bloidonia:groovy-common-extensions:0.5.4' )
 
 and the following methods will be available to you:
 
@@ -276,3 +276,20 @@ And (passing a list of amounts):
 
     // Note we run out of list 2 after the 'e', so just get the last 4 from list 1
     assert c = [ 1, 'a', 'b', 2, 'c', 'd', 3, 'e', 4 ]
+
+## Averages for collection of Numbers
+
+    static <V extends Number> AverageStats<V> average( Collection<V> collection )
+
+Given a colelction of Numbers, ie:
+
+    def a = 1..10
+
+We can get the `mean`, `median`, `variance` and `stdDev` wrapped in an Immutable `AverageStats` class by simply calling:
+
+    def stats = a.average()
+
+    assert stats.mean     == 5.5
+    assert stats.median   == 5.5
+    assert stats.variance == 8.25
+    assert String.format( '%.5g', avg.stdDev ) == '2.8723'
