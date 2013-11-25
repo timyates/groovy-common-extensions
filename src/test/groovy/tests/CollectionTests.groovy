@@ -144,7 +144,7 @@ class CollectionTests extends Specification {
       def avg = [ 332G, 42G, 100G ].average()
     expect:
       avg.mean     == 158
-      avg.median   == 100G
+      avg.median   == 100
       String.format( '%.7g', avg.variance ) == '15698.67'
       String.format( '%.6g', avg.stdDev )   == '125.294'
   }
@@ -154,8 +154,18 @@ class CollectionTests extends Specification {
       def avg = [ 332.0G, 998.0G, 42.0G, 100.0G ].average()
     expect:
       avg.mean     == 368
-      avg.median   == 216.0G
+      avg.median   == 216
       String.format( '%.7g', avg.variance ) == '144074.0'
       String.format( '%.6g', avg.stdDev )   == '379.571'
+  }
+
+  def 'check zero length averages'() {
+    given:
+      def avg = [].average()
+    expect:
+      avg.mean     == 0
+      avg.median   == 0
+      avg.variance == 0
+      avg.stdDev   == 0
   }
 }

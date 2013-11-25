@@ -273,11 +273,11 @@ class CollectionExtensionMethods {
   }
 
   @groovy.transform.Immutable( knownImmutables=[ 'median' ])
-  public static class AverageStats<V extends Number> {
-    Double mean
-    V median
-    Double variance
-    Double stdDev
+  public static class AverageStats {
+    BigDecimal mean
+    BigDecimal median
+    BigDecimal variance
+    BigDecimal stdDev
 
     String toString() {
       "AverageStats( mean:$mean, median:$median, variance:$variance, stdDev:$stdDev )"
@@ -300,15 +300,18 @@ class CollectionExtensionMethods {
    * @param collection The {@code Collection} of {@code Number} elements to generate stats for
    * @return           A populated {@code AverageStats} object
    */
-  static <V extends Number> AverageStats<V> average( Collection<V> collection ) {
+  static <V extends Number> AverageStats average( Collection<V> collection ) {
     int size        = collection.size()
-    V sum           = collection.sum()
-    int zsize       = size - 1
-    V median        = size % 2 == 1 ? 
-                        collection.sort( false )[ ( zsize / 2 ).toInteger() ] :
-                        collection.sort( false )[ [ Math.floor( zsize / 2 ), Math.ceil( zsize / 2.0 ) ]*.toInteger() ].sum() / 2
-    double mean     = sum / size
-    double variance = 0
+    if( size == 0 ) {
+      return new AverageStats( mean: 0, median: 0, variance: 0, stdDev: 0 )
+    }
+    V sum             = collection.sum()
+    int zsize         = size - 1
+    BigDecimal median = size % 2 == 1 ?
+                          collection.sort( false )[ ( zsize / 2 ).toInteger() ] :
+                          collection.sort( false )[ [ Math.floor( zsize / 2 ), Math.ceil( zsize / 2.0 ) ]*.toInteger() ].sum() / 2
+    BigDecimal mean   = sum / size
+    BigDecimal variance = 0
 
     for( V num : collection ) {
       variance += ( mean - num ) * ( mean - num )
