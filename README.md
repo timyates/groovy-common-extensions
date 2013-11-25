@@ -293,3 +293,21 @@ We can get the `mean`, `median`, `variance` and `stdDev` wrapped in an Immutable
     assert stats.median   == 5.5
     assert stats.variance == 8.25
     assert String.format( '%.5g', avg.stdDev ) == '2.8723'
+
+This is useful when we are assuming a collection of numbers is the same based on it's superficial criteria, ie given:
+
+    def a = [1] * 50 + [100] * 50
+    def b = 1..100
+
+It is easy using simple (bogus) stats to say they are very similar:
+
+    // Both print: "MIN 1 MAX 100 SIZE 100 MEAN 50.5"
+    println "MIN ${a.min()} MAX ${a.max()} SIZE ${a.size()} MEAN ${a.sum() / 100}"
+    println "MIN ${b.min()} MAX ${b.max()} SIZE ${b.size()} MEAN ${b.sum() / 100}"
+
+However, the standard deviation shows that they are very different sequences of numbers:
+
+    // prints: "AverageStats( mean:50.5, median:50.5, variance:2450.25, stdDev:49.5 )"
+    println a.average()
+    // prints: "AverageStats( mean:50.5, median:50.5, variance:833.25, stdDev:28.86607004772212 )"
+    println b.average()
