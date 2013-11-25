@@ -2,4 +2,5 @@ language: groovy
 jdk:
   - oraclejdk7
 install: true
-script: "./gradlew -q check"
+script:
+  - TERM=dumb ./gradlew check
