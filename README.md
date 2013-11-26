@@ -319,6 +319,8 @@ Allows setting the `delegate` of a `Closure` in-line:
     static <T> Closure<T> withDelegate( Closure<T> self, Object delegate )
     static <T> Closure<T> withDelegate( Closure<T> self, Object delegate, int strategy )
 
+**Only works if the jar is on the Classpath, with `@Grab` you need to call `ExpandoMetaClass.enableGlobally()`**
+
 So you can do:
 
     def testClosure = { num ->
