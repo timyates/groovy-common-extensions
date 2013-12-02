@@ -9,7 +9,7 @@ Obviously requires at least Groovy 2.0.5 (so that the extension system exists)
 
 Usage:
 
-    @Grab( 'com.bloidonia:groovy-common-extensions:0.5.5' )
+    @Grab( 'com.bloidonia:groovy-common-extensions:0.5.7' )
 
 and the following methods will be available to you:
 
@@ -312,20 +312,30 @@ However, the standard deviation shows that they are very different sequences of 
     // prints: "AverageStats( mean:50.5, median:50.5, variance:833.25, stdDev:28.86607004772212 )"
     println b.average()
 
-## Closure.`withDelegate`
+## byte[].hexdump()
 
-Allows setting the `delegate` of a `Closure` in-line:
+    static void hexdump( byte[] self, Writer writer, int idx, int len )
+    static void hexdump( byte[] self, int idx, int len )
+    static void hexdump( byte[] self, Writer writer, int idx )
+    static void hexdump( byte[] self, int idx )
+    static void hexdump( byte[] self, Writer writer )
+    static void hexdump( byte[] self )
 
-    static <T> Closure<T> withDelegate( Closure<T> self, Object delegate )
-    static <T> Closure<T> withDelegate( Closure<T> self, Object delegate, int strategy )
+Dumps a byte array out as hex in a readable form. You can also pass a `Writer` to print to this rather
+than `System.out` (the default)
 
-**Only works if the jar is on the Classpath, with `@Grab` you need to call `ExpandoMetaClass.enableGlobally()`**
+ie: calling:
 
-So you can do:
-
-    def testClosure = { num ->
-        num + val
+    String output = new StringWriter().with { w ->
+        bytes.hexdump( w )
+        w.toString()
     }
 
-    def value = testClosure.withDelegate( [ val: 4 ] )( 3 )
-    assert value == 7
+Writes the following to `output`:
+
+                +--------------------------------------------------+
+                | 0  1  2  3  4  5  6  7   8  9  a  b  c  d  e  f  |
+     +----------+--------------------------------------------------+------------------+
+     | 00000000 | 48 65 6c 6c 6f 20 61 6e  64 20 77 65 6c 63 6f 6d | Hello and welcom |
+     | 00000010 | 65 20 74 6f 20 e2 98 85  20 47 72 6f 6f 76 79    | e to ... Groovy  |
+     +----------+--------------------------------------------------+------------------+
