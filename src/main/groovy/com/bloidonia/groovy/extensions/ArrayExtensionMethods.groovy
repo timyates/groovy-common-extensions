@@ -21,7 +21,8 @@ package com.bloidonia.groovy.extensions
  */
 class ArrayExtensionMethods {
     /**
-     * Generate a hex-dump of a byte[]
+     * Generate a hex-dump of a byte array.
+     *
      * <pre class="groovyTestCase">
      *   byte[] bytes = "Hello and welcome to ★ Groovy".bytes
      *
@@ -40,9 +41,12 @@ class ArrayExtensionMethods {
      *   assert output == expected
      * </pre>
      *
-     * @param self     the byte[]
-     * @param delegate the object to delegate to
-     * @return         the closure but with its delegate set
+     * @param self     the byte[] to dump
+     * @param writer   the writer to dump to
+     * @param idx      the index into self to start dumping from
+     * @param len      the number of bytes to dump
+     *
+     * @since 0.5.7
      */
     static void hexdump( byte[] self, Writer writer, int idx, int len ) {
         writer.write '''            +--------------------------------------------------+
@@ -65,22 +69,63 @@ class ArrayExtensionMethods {
         writer.write   ' +----------+--------------------------------------------------+------------------+\n'
     }
 
+    /**
+     * Generate a hex-dump of a byte array.
+     *
+     * @param self     the byte[] to dump
+     * @param idx      the index into self to start dumping from
+     * @param len      the number of bytes to dump
+     *
+     * @since 0.5.7
+     */
     static void hexdump( byte[] self, int idx, int len ) {
         hexdump( self, new PrintWriter( System.out ), idx, len )
     }
 
+    /**
+     * Generate a hex-dump of a byte array.
+     *
+     * @param self     the byte[] to dump
+     * @param writer   the writer to dump to
+     * @param idx      the index into self to start dumping from
+     *
+     * @since 0.5.7
+     */
     static void hexdump( byte[] self, Writer writer, int idx ) {
         hexdump( self, writer, idx, self.length )
     }
 
+    /**
+     * Generate a hex-dump of a byte array.
+     *
+     * @param self     the byte[] to dump
+     * @param idx      the index into self to start dumping from
+     *
+     * @since 0.5.7
+     */
     static void hexdump( byte[] self, int idx ) {
         hexdump( self, new PrintWriter( System.out ), idx, self.length )
     }
 
+    /**
+     * Generate a hex-dump of a byte array.
+     *
+     * @param self     the byte[] to dump
+     * @param writer   the writer to dump to
+     *
+     * @since 0.5.7
+     */
     static void hexdump( byte[] self, Writer writer ) {
         hexdump( self, writer, 0, self.length )
     }
 
+    /**
+     * Generate a hex-dump of a byte array.
+     *
+     * @param self     the byte[] to dump
+     *
+     * @since 0.5.7
+     */
     static void hexdump( byte[] self ) {
         hexdump( self, new PrintWriter( System.out ), 0, self.length )
     }
