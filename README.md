@@ -9,7 +9,7 @@ Obviously requires at least Groovy 2.0.5 (so that the extension system exists)
 
 Usage:
 
-    @Grab( 'com.bloidonia:groovy-common-extensions:0.5.7' )
+    @Grab( 'com.bloidonia:groovy-common-extensions:0.5.8' )
 
 and the following methods will be available to you:
 
