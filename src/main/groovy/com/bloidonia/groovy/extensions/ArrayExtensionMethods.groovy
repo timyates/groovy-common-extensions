@@ -67,6 +67,7 @@ class ArrayExtensionMethods {
             }
         }
         writer.write   ' +----------+--------------------------------------------------+------------------+\n'
+        writer.flush()
     }
 
     /**
