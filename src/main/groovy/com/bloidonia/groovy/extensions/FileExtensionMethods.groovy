@@ -31,6 +31,7 @@ import java.util.zip.ZipEntry
 class FileExtensionMethods {
 
     public static final String ZIP_EXTENSION = ".zip"
+    public static final String JAR_EXTENSION = ".jar"
 
     static File zip ( File self )  {
         zip( self, null, null )
@@ -96,8 +97,8 @@ class FileExtensionMethods {
             created = true
         }
         try {
-            if (file && !file.isFile()) throw new IllegalArgumentException("'destination' has to be a *.zip file.")
-            if (file && !file.name.toLowerCase().endsWith(ZIP_EXTENSION)) throw new IllegalArgumentException("'destination' has to be a *.zip file.")
+            if (file && !file.isFile()) throw new IllegalArgumentException("'destination' has to be a *.zip or *.jar file.")
+            if (file && !file.name.toLowerCase().endsWith(ZIP_EXTENSION) && !file.name.toLowerCase().endsWith(JAR_EXTENSION)) throw new IllegalArgumentException("'destination' has to be a *.zip or *.jar file.")
         }
         catch( e ) {
             if( created ) {
@@ -168,10 +169,10 @@ class FileExtensionMethods {
     }
 
     private static void checkUnzipFileType(File self) {
-        if (!self.isFile()) throw new IllegalArgumentException("File#unzip() has to be called on a *.zip file.")
+        if (!self.isFile()) throw new IllegalArgumentException("File#unzip() has to be called on a *.zip or *.jar file.")
 
         def filename = self.name
-        if (!filename.toLowerCase().endsWith(ZIP_EXTENSION)) throw new IllegalArgumentException("File#unzip() has to be called on a *.zip file.")
+        if (!filename.toLowerCase().endsWith(ZIP_EXTENSION) && !filename.toLowerCase().endsWith(JAR_EXTENSION)) throw new IllegalArgumentException("File#unzip() has to be called on a *.zip or *.jar file.")
     }
 
     private static void checkUnzipDestination(File file) {
