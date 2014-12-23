@@ -18,18 +18,77 @@ package com.bloidonia.groovy.extensions
 
 import groovy.json.JsonSlurper
 import groovy.util.slurpersupport.GPathResult
+import org.xml.sax.XMLReader;
+
+import javax.xml.parsers.SAXParser;
+
 
 /**
  * @author Matt Burgess
  */
 class StringExtensionMethods {
 
-    static XmlSlurper xmlSlurper = new XmlSlurper()
     static ConfigSlurper configSlurper = new ConfigSlurper()
     static JsonSlurper jsonSlurper = new JsonSlurper()
 
+    /**
+     * Parse a String as XML via XmlSlurper
+     *
+     * <pre class="groovyTestCase">
+     *   assert '<root><name>Matt</name></root>'.toXml().name.text() == 'Matt'
+     * </pre>
+     *
+     * @param self   The String to parse
+     * @return       The GPathResult of the call to parseText
+     * @see groovy.util.XmlSlurper
+     */
     static GPathResult toXml( String self ) {
-        xmlSlurper.parseText( self )
+        toXml(self, false, true, false)
+    }
+
+    static GPathResult toXml( String self,
+                              boolean validating,
+                              boolean namespaceAware) {
+        toXml(self, validating, namespaceAware, false)
+    }
+
+    static GPathResult toXml( String self,
+                              boolean validating,
+                              boolean namespaceAware,
+                              boolean allowDocTypeDeclaration) {
+        new XmlSlurper(validating, namespaceAware, allowDocTypeDeclaration).parseText(self)
+    }
+
+    /**
+     * Parse a String as XML via XmlSlurper with a specified SAXParser.
+     *
+     * <pre class="groovyTestCase">
+     *  // Given some unhinged HTML
+     *  def text="""<div>
+     *             |    <h2>Test</h2>
+     *             |    <div>
+     *             |        <span>Hi
+     *             |    </div>
+     *             |</div>""".stripMargin()
+     *
+     *  // Pick your HTML cleaner of choice, and pass it to toXml
+     *  def parsed = text.toXml(new org.cyberneko.html.parsers.SAXParser())
+     *
+     *  assert parsed.BODY.DIV.DIV.SPAN.text().trim() == 'Hi'
+     * </pre>
+     *
+     * @param self   The String to parse
+     * @param parser The SAXParser to use
+     * @return       The GPathResult of the call to parseText
+     */
+    static GPathResult toXml( String self,
+                              SAXParser parser) {
+        toXml(self, parser.getXMLReader())
+    }
+
+    static GPathResult toXml( String self,
+                              XMLReader reader) {
+        new XmlSlurper(reader).parseText(self)
     }
 
     static ConfigObject toConfig( String self ) {

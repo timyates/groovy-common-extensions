@@ -20,6 +20,7 @@ dependencies {
   }
   testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
   testCompile fileTree( dir:'build/libs/', includes:[ "groovy-common-extensions-${version}.jar".toString() ] )
+  testRuntime 'net.sourceforge.nekohtml:nekohtml:1.9.14'
 }
 
 group = 'com.bloidonia'
