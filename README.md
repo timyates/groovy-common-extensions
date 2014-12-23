@@ -339,3 +339,23 @@ Writes the following to `output`:
      | 00000000 | 48 65 6c 6c 6f 20 61 6e  64 20 77 65 6c 63 6f 6d | Hello and welcom |
      | 00000010 | 65 20 74 6f 20 e2 98 85  20 47 72 6f 6f 76 79    | e to ... Groovy  |
      +----------+--------------------------------------------------+------------------+
+
+## String.toXml
+
+    static GPathResult toXml( String self ) {
+    static GPathResult toXml( String self, boolean validating, boolean namespaceAware)
+    static GPathResult toXml( String self, boolean validating, boolean namespaceAware, boolean allowDocTypeDeclaration)
+    static GPathResult toXml( String self, SAXParser parser)
+    static GPathResult toXml( String self, XMLReader reader)
+
+Will pass any String through `XmlSlurper` with the specified constructor parameters, ie:
+
+    assert '<xml><name>Tim</name></xml>'.toXml().name == 'Tim'
+
+## String.toConfig
+
+    static ConfigObject toConfig( String self ) {
+
+## String.toJson
+
+    static Object toJson( String self ) {

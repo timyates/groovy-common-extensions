@@ -6,7 +6,7 @@ apply plugin: 'signing'
 sourceCompatibility=1.6
 targetCompatibility=1.6
 
-version = '0.5.8'
+version = '0.6.0'
 
 repositories {
   mavenCentral()
