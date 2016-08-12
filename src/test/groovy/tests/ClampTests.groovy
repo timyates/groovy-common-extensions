@@ -41,7 +41,7 @@ public class ClampTests extends Specification {
   }
 
   @Unroll( 'Range clamping #input to #range should result in #expected' )
-  def 'check clamping'() {
+  def 'check clamping by range'() {
     expect:
       expected == input.clamp( range )
     where:
@@ -66,8 +66,8 @@ public class ClampTests extends Specification {
        'f'  |  'c'..'e'  ||   'e'
   }
 
-  @Unroll( 'Range clamping #input to #range should result in #expected' )
-  def 'check clamping'() {
+  @Unroll( 'Range clamping #input range to #range should result in #expected' )
+  def 'check range clamping by range'() {
     expect:
       expected == input.clamp( range )
     where:
