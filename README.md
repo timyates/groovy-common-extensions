@@ -9,11 +9,20 @@ Obviously requires at least Groovy 2.0.5 (so that the extension system exists)
 
 Usage:
 
-    @Grab( 'com.bloidonia:groovy-common-extensions:0.6.0' )
+    @Grab( 'com.bloidonia:groovy-common-extensions:0.7.0' )
 
 and the following methods will be available to you:
 
 # Current extensions:
+
+## `addImplicitConversion` (thanks MartyNeal)
+
+    static void addImplicitConversion(Class self, Class to, Closure conversion)
+
+Lets you overload the `asType` call in Groovy, so you can do:
+
+    String.addImplicitConversion(Integer) { it.length() }
+    assert ("foo" as Integer) == 3
 
 ## `clamp`
 

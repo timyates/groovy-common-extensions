@@ -6,7 +6,7 @@ apply plugin: 'signing'
 sourceCompatibility=1.6
 targetCompatibility=1.6
 
-version = '0.6.0'
+version = '0.7.0'
 
 repositories {
   mavenCentral()
@@ -30,9 +30,9 @@ task generateModule << {
     g.findAll {
       it.parentFile.name == 'extensions' && it.name.endsWith( 'groovy' )
     }.collect {
-      it.toString().replaceAll( File.separator, '.' )
+      it.toString().replaceAll( '\\' + File.separator, '.' )
     }.collect {
-      it - ( g.srcDirs as List )[0].toString().replaceAll( File.separator, '.' )
+      it - ( g.srcDirs as List )[0].toString().replaceAll( '\\' + File.separator, '.' )
     }.collect {
       it[ 1..-8 ]
     }.join( ',' )

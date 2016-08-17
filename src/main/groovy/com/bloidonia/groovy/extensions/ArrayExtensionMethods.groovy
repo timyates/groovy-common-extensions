@@ -24,7 +24,7 @@ class ArrayExtensionMethods {
      * Generate a hex-dump of a byte array.
      *
      * <pre class="groovyTestCase">
-     *   byte[] bytes = "Hello and welcome to ★ Groovy".bytes
+     *   byte[] bytes = "Hello and welcome to ★ Groovy".getBytes('UTF-8')
      *
      *   String output = new StringWriter().with { w ->
      *      bytes.hexdump( w )
