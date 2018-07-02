@@ -142,6 +142,7 @@ class FileExtensionMethods {
             while(entry = zipInput.nextEntry)  {
                 if (!entry.isDirectory())  {
                     final file = new File(destination, entry.name)
+                    checkForZipSlip(destination, file)
                     if( filter == null || filter( file ) ) {
                         file.parentFile?.mkdirs()
 
@@ -155,6 +156,7 @@ class FileExtensionMethods {
                 }
                 else {
                     final dir = new File(destination, entry.name)
+                    checkForZipSlip(destination, dir)
                     if( filter == null || filter( dir ) ) {
                         dir.mkdirs()
 
@@ -165,6 +167,12 @@ class FileExtensionMethods {
         }
 
         unzippedFiles
+    }
+
+    private static void checkForZipSlip(File destination, File dir) {
+        if (!dir.canonicalPath.startsWith(destination.canonicalPath)) {
+            throw new IllegalArgumentException("Attempt to unzip ($dir.canonicalPath) outside of destination ($destination.canonicalPath) rejected")
+        }
     }
 
     private static void checkUnzipFileType(File self) {
