@@ -1,10 +1,12 @@
-apply plugin: 'groovy'
-apply plugin: 'idea'
-apply plugin: 'maven'
-apply plugin: 'signing'
+plugins {
+  id 'groovy'
+  id 'idea'
+  id 'maven'
+  id 'signing'
+}
 
-sourceCompatibility=1.6
-targetCompatibility=1.6
+sourceCompatibility=1.7
+targetCompatibility=1.7
 
 version = '0.7.0'
 
@@ -13,37 +15,39 @@ repositories {
 }
 
 dependencies {
-  compile      'org.codehaus.groovy:groovy-all:2.2.1'
+  compile      'org.codehaus.groovy:groovy-all:2.5.0'
   testCompile  'junit:junit:4.10'
   testCompile( 'org.apache.ant:ant-junit:1.8.4' ) {
       exclude(group: 'junit', module: 'junit')
   }
-  testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+  testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
   testCompile fileTree( dir:'build/libs/', includes:[ "groovy-common-extensions-${version}.jar".toString() ] )
   testRuntime 'net.sourceforge.nekohtml:nekohtml:1.9.14'
 }
 
 group = 'com.bloidonia'
 
-task generateModule << {
-  def extensionFiles = sourceSets.main.groovy.with { g ->
-    g.findAll {
-      it.parentFile.name == 'extensions' && it.name.endsWith( 'groovy' )
-    }.collect {
-      it.toString().replaceAll( '\\' + File.separator, '.' )
-    }.collect {
-      it - ( g.srcDirs as List )[0].toString().replaceAll( '\\' + File.separator, '.' )
-    }.collect {
-      it[ 1..-8 ]
-    }.join( ',' )
-  }
-  new File( "$buildDir/classes/main/META-INF/services" ).with { f ->
-    f.mkdirs()
-    new File( f, 'org.codehaus.groovy.runtime.ExtensionModule' ).withWriter { w ->
-      w.writeLine 'moduleName=groovy-common-extensions'
-      w.writeLine "moduleVersion=$version"
-      w.writeLine "extensionClasses=$extensionFiles"
-      w.writeLine 'staticExtensionClasses='
+task generateModule() {
+  doLast {
+    def extensionFiles = sourceSets.main.groovy.with { g ->
+      g.findAll {
+        it.parentFile.name == 'extensions' && it.name.endsWith( 'groovy' )
+      }.collect {
+        it.toString().replaceAll( '\\' + File.separator, '.' )
+      }.collect {
+        it - ( g.srcDirs as List )[0].toString().replaceAll( '\\' + File.separator, '.' )
+      }.collect {
+        it[ 1..-8 ]
+      }.join( ',' )
+    }
+    new File( "$buildDir/resources/main/META-INF/services" ).with { f ->
+      f.mkdirs()
+      new File( f, 'org.codehaus.groovy.runtime.ExtensionModule' ).withWriter { w ->
+        w.writeLine 'moduleName=groovy-common-extensions'
+        w.writeLine "moduleVersion=$version"
+        w.writeLine "extensionClasses=$extensionFiles"
+        w.writeLine 'staticExtensionClasses='
+      }
     }
   }
 }

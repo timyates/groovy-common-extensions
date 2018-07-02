@@ -19,7 +19,7 @@ package tests
 import spock.lang.Specification
 import spock.lang.Unroll
 
-public class ClampTests extends Specification {
+class ClampTests extends Specification {
   @Unroll( 'Clamping #input between #lower and #upper should result in #expected' )
   def 'check clamping'() {
     expect:

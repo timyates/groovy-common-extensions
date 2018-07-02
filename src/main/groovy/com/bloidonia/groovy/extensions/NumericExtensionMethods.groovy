@@ -65,8 +65,9 @@ class NumericExtensionMethods {
    * @return       The Range with its upper and lower bounds clamped to those of the clamp range
    */
   static <T extends Comparable> Range<T> clamp( Range<T> self, Range<T> range ) {
-    self.class.newInstance( clamp( self.from, range.from, range.to ),
-                            clamp( self.to, range.from, range.to ),
-                            self.reverse )
+    T from = clamp( self.from, range.from, range.to )
+    T to = clamp( self.to, range.from, range.to )
+    self.class.newInstance( self.reverse ? to : from,
+                            self.reverse ? from : to )
   }
 }
