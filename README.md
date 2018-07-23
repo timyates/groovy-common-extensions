@@ -276,7 +276,7 @@ This new functionality returns an iterator, and you can specify how many reseult
     def b = a.transposedIterator().collect()
 
     // Note we get the extraneous 'e' that is lost by transpose()
-    assert b = [ 1, 'a', 2, 'b', 3, 'c', 4, 'd', 'e' ]
+    assert b == [ 1, 'a', 2, 'b', 3, 'c', 4, 'd', 'e' ]
 
 And (passing a list of amounts):
 
@@ -284,7 +284,7 @@ And (passing a list of amounts):
     def c = a.transposedIterator( [ 1, 2 ] ).collect()
 
     // Note we run out of list 2 after the 'e', so just get the last 4 from list 1
-    assert c = [ 1, 'a', 'b', 2, 'c', 'd', 3, 'e', 4 ]
+    assert c == [ 1, 'a', 'b', 2, 'c', 'd', 3, 'e', 4 ]
 
 ## Averages for collection of Numbers
 
@@ -301,7 +301,7 @@ We can get the `mean`, `median`, `variance` and `stdDev` wrapped in an Immutable
     assert stats.mean     == 5.5
     assert stats.median   == 5.5
     assert stats.variance == 8.25
-    assert String.format( '%.5g', avg.stdDev ) == '2.8723'
+    assert String.format( '%.5f', stats.stdDev ) == '2.87228'
 
 This is useful when we are assuming a collection of numbers is the same based on it's superficial criteria, ie given:
 
@@ -336,7 +336,7 @@ than `System.out` (the default)
 ie: calling:
 
     String output = new StringWriter().with { w ->
-        bytes.hexdump( w )
+        'Hello and welcome to Groovy'.bytes.hexdump( w )
         w.toString()
     }
 
@@ -364,7 +364,11 @@ Will pass any String through `XmlSlurper` with the specified constructor paramet
 ## String.toConfig
 
     static ConfigObject toConfig( String self ) {
+Example:
+    assert config1.toConfig().config.a==1    
 
 ## String.toJson
 
     static Object toJson( String self ) {
+Example:
+    assert '{"xml":{"name":"Tim"}}'.toJson().xml.name == 'Tim'
