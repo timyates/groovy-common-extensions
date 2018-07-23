@@ -23,49 +23,51 @@ import spock.lang.Specification
  * Date: 11/20/12
  */
 class NodeToMapTests extends Specification {
-    def 'check xml string to node to map coercion with children'() {
+    def 'check xml to map coercion with children'() {
         given:
         def xml = '''<dan id="1234" attr="attrValue">
                     |  <key value="val" />
                     |  <key value="val2" />
                     |</dan>'''.stripMargin()
-        def map = new XmlSlurper().parseText( xml ).toMap()
+        def map = _getMap(xml)
 
         expect:
         map instanceof Map
-        map.dan._children.size() == 2
-        map.dan._children.key[1].value == 'val2'
+        map.dan.key.size() == 2
+        map.dan.key[1].value == 'val2'
     }
 
-    def 'check xml string to node to map coercion with children and specified childKey'() {
+    def 'check xml to map coercion'() {
         given:
-        def xml = '''<dan id="1234" attr="attrValue">
-                    |  <key value="val" />
-                    |  <key value="val2" />
-                    |</dan>'''.stripMargin()
-        def map = new XmlSlurper().parseText( xml ).toMap( 'kids' )
+        def xml = '<dan value="a"><subnode><item value="a"/></subnode></dan>'
+        def map = _getMap(xml)
 
         expect:
-        map instanceof Map
-        map.dan.kids.size() == 2
-        map.dan.kids.key[1].value == 'val2'
+        map == [dan: [value: 'a', subnode: [item: [value: 'a']]]]
     }
 
-    def 'check map value'() {
+    def 'check nested without attrs'() {
         given:
-            def xmlstr = '<dan value="a"><subnode><item value="a"/></subnode></dan>'
-            def xml = new XmlSlurper().parseText( xmlstr )
-            def map = xml.toMap()
+        def xml = '<dan><cool>maybe</cool></dan>'
+        def map = _getMap(xml)
+
         expect:
-            map == [dan:[value:'a',_children:[[subnode:[_children:[[item:[value:'a']]]]]]]]
+        map == [dan: [ cool: "maybe" ] ]
     }
 
-    def 'check map value with childKey'() {
+    def 'test angry schema design'() {
         given:
-            def xmlstr = '<dan value="a"><subnode><item value="a"/></subnode></dan>'
-            def xml = new XmlSlurper().parseText( xmlstr )
-            def map = xml.toMap( 'kids' )
+        def xml = '''<dan cool="yes">
+                     |  <cool>maybe</cool>
+                     |</dan>
+                  '''.stripMargin()
+        def map = _getMap(xml)
+
         expect:
-            map == [dan:[value:'a',kids:[[subnode:[kids:[[item:[value:'a']]]]]]]]
+        map == [dan: [cool: ['yes', 'maybe']]]
+    }
+
+    def _getMap(xml) {
+        new XmlSlurper().parseText(xml).toMap()
     }
 }
