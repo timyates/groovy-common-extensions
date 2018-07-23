@@ -99,7 +99,7 @@ public class ZipFileTests extends Specification {
 
         then:
             IllegalArgumentException ex = thrown()
-            ex.message == "'destination' has to be a *.zip file."
+            ex.message == "'destination' has to be a *.zip or *.jar file."
     }
 
     def 'put zip file to the given destination'() {
@@ -130,7 +130,7 @@ public class ZipFileTests extends Specification {
 
         then:
             IllegalArgumentException ex = thrown()
-            ex.message == "File#unzip() has to be called on a *.zip file."
+            ex.message == "File#unzip() has to be called on a *.zip or *.jar file."
     }
 
     def 'unzip single file'() {
