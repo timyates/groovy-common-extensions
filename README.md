@@ -1,4 +1,4 @@
-# groovy-common-extensions
+# Groovy Common Extensions
 
 [![Build Status](https://travis-ci.org/timyates/groovy-common-extensions.png)](https://travis-ci.org/timyates/groovy-common-extensions)
 
@@ -6,10 +6,18 @@ Lets you add things I find commonly useful to the Groovy language via the extens
 system.
 
 Obviously requires at least Groovy 2.0.5 (so that the extension system exists)
+Tested under Groovy: v2.5.1, v3.0.7
 
 Usage:
 
     @Grab( 'com.bloidonia:groovy-common-extensions:0.7.1' )
+
+
+If you get the error `groovy.lang.GroovyRuntimeException: Conflicting module versions. Module [...`, try to exclude `groovy-all` module.
+
+```groovy
+@GrabExclude(group='org.codehaus.groovy', module='groovy-all')
+```
 
 and the following methods will be available to you:
 
@@ -365,12 +373,18 @@ Will pass any String through `XmlSlurper` with the specified constructor paramet
 
 ## String.toConfig
 
-    static ConfigObject toConfig( String self ) {
+    static ConfigObject toConfig( String self )
+
 Example:
+```groovy
     assert config1.toConfig().config.a==1    
+```
 
 ## String.toJson
 
-    static Object toJson( String self ) {
+    static Object toJson( String self )
+
 Example:
+```groovy
     assert '{"xml":{"name":"Tim"}}'.toJson().xml.name == 'Tim'
+```
